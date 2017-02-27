@@ -13,8 +13,6 @@ class MainViewController: UIViewController {
     
     //MARK: Data
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var username = String()
-    
     
     //MARK: Outlets
     @IBOutlet weak var nameOutlet: UITextField!
@@ -31,36 +29,61 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         nameOutlet.placeholder = "Email"
         emailOutlet.placeholder = "Password"
+        emailOutlet.isSecureTextEntry = true
         passwordOutlet.isHidden = true
-        
         super.viewDidLoad()
+        
+        if FIRAuth.auth()?.currentUser?.uid == nil {
+            handleLogout()
+        } else {
+            print("LOGGED IN")
+        }
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    
+    //MARK: Helper
+    func handleLogout() {
+        print("NOT LOGED IN")
+    }
     
     //MARK: Actions
     @IBAction func goButtonPressed(_ sender: UIButton) {
+        
         if goButtonLabel.title(for: .normal) == "Login" {
+            guard let email = nameOutlet.text, let password = emailOutlet.text else {
+                print("Form is not valid")
+                return
+            }
             print("trying to log in")
-            
+            FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                } else {
+                    print("logging in")
+                }
+            })
         } else {
-            print("trying to register")
             guard let email = emailOutlet.text, let password = passwordOutlet.text, let name = nameOutlet.text else {
                 print("Form is not valid")
                 return
             }
+            print("trying to register")
             FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
                 if error != nil {
                     print(error!)
                     return
                 }
+                guard let uid = user?.uid else {
+                    return
+                }
                 
                 let ref = FIRDatabase.database().reference(fromURL: "https://citychat-f1d4f.firebaseio.com/")
-                let usersReference = ref.child("users")
+                let usersReference = ref.child("users").child(uid)
                 let values = ["name": name, "email": email]
                 usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                     if err != nil {
