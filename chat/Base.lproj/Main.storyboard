@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qko-bJ-MSz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -12,7 +12,7 @@
         <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="chat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="logRegController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="MainViewController" customModule="chat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -287,6 +287,55 @@
             </objects>
             <point key="canvasLocation" x="2696.8000000000002" y="841.52923538230891"/>
         </scene>
+        <!--Loading View Controller-->
+        <scene sceneID="TY8-sw-Cm9">
+            <objects>
+                <viewController id="Qko-bJ-MSz" customClass="LoadingViewController" customModule="chat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="U0l-aR-WWA"/>
+                        <viewControllerLayoutGuide type="bottom" id="zkk-Ne-i0L"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AdN-dL-c2H">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="98a-DO-yYB">
+                                <rect key="frame" x="112" y="404" width="150" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="worldmap" translatesAutoresizingMaskIntoConstraints="NO" id="yfM-TX-Gta">
+                                <rect key="frame" x="0.0" y="118" width="375" height="267"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CityChat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbL-Nd-MYs">
+                                <rect key="frame" x="48" y="56" width="292" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZuI-kx-03P">
+                                <rect key="frame" x="149" y="428" width="91" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="98a-DO-yYB" id="ggh-JE-Yh6"/>
+                        <segue destination="hZU-lX-YXS" kind="presentation" identifier="cityChatSegue" id="gRq-FK-6M9"/>
+                        <segue destination="CWS-gt-mt5" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="xKM-rm-F3v"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="loginRegSegue" id="mSf-qR-PX6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AtA-f6-t2b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="CWS-gt-mt5" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="501.60000000000002" y="-686.80659670164926"/>
+        </scene>
         <!--Item-->
         <scene sceneID="bwc-kI-dVM">
             <objects>
@@ -307,4 +356,10 @@
             <point key="canvasLocation" x="909.60000000000002" y="841.52923538230891"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="worldmap" width="1920" height="1080"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="bVw-cs-KM2"/>
+    </inferredMetricsTieBreakers>
 </document>

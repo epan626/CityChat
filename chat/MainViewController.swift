@@ -12,16 +12,12 @@ import Firebase
 class MainViewController: UIViewController {
     
     //MARK: Data
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     //MARK: Outlets
     @IBOutlet weak var nameOutlet: UITextField!
     @IBOutlet weak var emailOutlet: UITextField!
     @IBOutlet weak var passwordOutlet: UITextField!
     @IBOutlet weak var segmentedControllerOutlet: UISegmentedControl!
     @IBOutlet weak var goButtonLabel: UIButton!
-    
-    
     @IBOutlet var inputFieldCollections: [UITextField]!
     
     
@@ -33,11 +29,7 @@ class MainViewController: UIViewController {
         passwordOutlet.isHidden = true
         super.viewDidLoad()
         
-        if FIRAuth.auth()?.currentUser?.uid == nil {
-            handleLogout()
-        } else {
-            print("LOGGED IN")
-        }
+        
     }
     
     
@@ -47,12 +39,21 @@ class MainViewController: UIViewController {
 
     //MARK: Helper
     func handleLogout() {
-        print("NOT LOGED IN")
+        print("NOT LOGGED IN")
     }
     
+    
+    //MARK: Segue
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "cityChatSegue" {
+//            let tabBarController = segue.destination as!
+//            UITabBarController
+//            let chatroomViewController = tabBarController.viewControllers as! ChatroomViewController
+//    
+//        }
+//    }
     //MARK: Actions
     @IBAction func goButtonPressed(_ sender: UIButton) {
-        
         if goButtonLabel.title(for: .normal) == "Login" {
             guard let email = nameOutlet.text, let password = emailOutlet.text else {
                 print("Form is not valid")
@@ -64,7 +65,7 @@ class MainViewController: UIViewController {
                     print(error!)
                     return
                 } else {
-                    print("logging in")
+                    self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 }
             })
         } else {
@@ -120,7 +121,10 @@ class MainViewController: UIViewController {
         }
     }
     
-
+    //MARK: Callbacks
+    
+    
+      @IBAction func unwindToMain(segue: UIStoryboardSegue){}
    
 
 }
