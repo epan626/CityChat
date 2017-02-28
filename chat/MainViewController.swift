@@ -11,7 +11,6 @@ import Firebase
 
 class MainViewController: UIViewController {
     
-    //MARK: Data
     //MARK: Outlets
     @IBOutlet weak var nameOutlet: UITextField!
     @IBOutlet weak var emailOutlet: UITextField!
@@ -27,9 +26,8 @@ class MainViewController: UIViewController {
         emailOutlet.placeholder = "Password"
         emailOutlet.isSecureTextEntry = true
         passwordOutlet.isHidden = true
+        passwordOutlet.isEnabled = false
         super.viewDidLoad()
-        
-        
     }
     
     
@@ -37,29 +35,17 @@ class MainViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    //MARK: Helper
-    func handleLogout() {
-        print("NOT LOGGED IN")
-    }
-    
-    
-    //MARK: Segue
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "cityChatSegue" {
-//            let tabBarController = segue.destination as!
-//            UITabBarController
-//            let chatroomViewController = tabBarController.viewControllers as! ChatroomViewController
-//    
-//        }
-//    }
     //MARK: Actions
+    
+    //sign in / register button
     @IBAction func goButtonPressed(_ sender: UIButton) {
-        if goButtonLabel.title(for: .normal) == "Login" {
+
+        //logs in
+        if goButtonLabel.title(for: .normal) == "Sign in" {
             guard let email = nameOutlet.text, let password = emailOutlet.text else {
                 print("Form is not valid")
                 return
             }
-            print("trying to log in")
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error != nil {
                     print(error!)
@@ -68,12 +54,13 @@ class MainViewController: UIViewController {
                     self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 }
             })
+            
+        //registers
         } else {
             guard let email = emailOutlet.text, let password = passwordOutlet.text, let name = nameOutlet.text else {
                 print("Form is not valid")
                 return
             }
-            print("trying to register")
             FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
                 if error != nil {
                     print(error!)
@@ -82,7 +69,6 @@ class MainViewController: UIViewController {
                 guard let uid = user?.uid else {
                     return
                 }
-                
                 let ref = FIRDatabase.database().reference(fromURL: "https://citychat-f1d4f.firebaseio.com/")
                 let usersReference = ref.child("users").child(uid)
                 let values = ["name": name, "email": email]
@@ -93,38 +79,38 @@ class MainViewController: UIViewController {
                     }
                 })
             })
-            
         }
     }
     
+    //swap between sign in / register views
     @IBAction func signRegisterButtonPressed(_ sender: Any) {
         if segmentedControllerOutlet.selectedSegmentIndex == 0 {
-            print("sign in pressed")
-            goButtonLabel.setTitle("Login", for: .normal)
+            goButtonLabel.setTitle("Sign in", for: .normal)
             nameOutlet.placeholder = "Email"
-            emailOutlet.placeholder = "Password"
+            emailOutlet.placeholder = "Password" // on purpose
             emailOutlet.isSecureTextEntry = true
             passwordOutlet.isHidden = true
+            passwordOutlet.isEnabled = false
             for x in 0...inputFieldCollections.count-1 {
                 inputFieldCollections[x].text = ""
             }
         } else {
              goButtonLabel.setTitle("Register", for: .normal)
-            print("register pressed")
             for x in 0...inputFieldCollections.count-1 {
                 inputFieldCollections[x].text = ""
             }
             nameOutlet.placeholder = "Username"
             emailOutlet.placeholder = "Email"
             passwordOutlet.isHidden = false
+            passwordOutlet.isEnabled = true
             emailOutlet.isSecureTextEntry = false
         }
     }
     
-    //MARK: Callbacks
-    
-    
-      @IBAction func unwindToMain(segue: UIStoryboardSegue){}
+
+    //MARK: Unwind Segue
+
+    @IBAction func unwindToMain(segue: UIStoryboardSegue){}
    
 
 }

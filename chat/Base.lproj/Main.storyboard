@@ -46,7 +46,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vwp-IT-A5i">
                                         <rect key="frame" x="123" y="291" width="128" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Login"/>
+                                        <state key="normal" title="Sign in"/>
                                         <connections>
                                             <action selector="goButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g08-Sg-8Tk"/>
                                             <segue destination="hZU-lX-YXS" kind="presentation" identifier="cityChatSegue" id="bVw-cs-KM2"/>
@@ -202,7 +202,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AOk-pU-rUl" id="SG7-UA-Q3k">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -385,7 +385,6 @@
             </objects>
             <point key="canvasLocation" x="501.60000000000002" y="-686.80659670164926"/>
         </scene>
-        <!--Item-->
         <!--Navigation Controller-->
         <scene sceneID="bwc-kI-dVM">
             <objects>
