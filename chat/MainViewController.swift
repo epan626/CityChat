@@ -27,6 +27,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         emailOutlet.isSecureTextEntry = true
         passwordOutlet.isHidden = true
         passwordOutlet.isEnabled = false
+        nameOutlet.delegate = self
+        emailOutlet.delegate = self
+        passwordOutlet.delegate = self
         super.viewDidLoad()
     }
     
@@ -45,7 +48,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error != nil {
                     print(error!)
-                    return
+                    let alert = UIAlertController(title: "Invalid", message: "Both email and password are required!", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 } else {
                     self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 }
@@ -60,6 +65,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
                 if error != nil {
                     print(error!)
+                    let alert = UIAlertController(title: "Invalid", message: "All fields are required!", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                     return
                 }
                 guard let uid = user?.uid else {
@@ -113,6 +121,12 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         emailOutlet.resignFirstResponder()
         passwordOutlet.resignFirstResponder()
         
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        nameOutlet.resignFirstResponder()
+        emailOutlet.resignFirstResponder()
+        passwordOutlet.resignFirstResponder()
+        return true
     }
    
 }

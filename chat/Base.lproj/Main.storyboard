@@ -49,7 +49,6 @@
                                         <state key="normal" title="Sign in"/>
                                         <connections>
                                             <action selector="goButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g08-Sg-8Tk"/>
-                                            <segue destination="hZU-lX-YXS" kind="presentation" identifier="cityChatSegue" id="bVw-cs-KM2"/>
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="em5-Ko-44U">
@@ -81,11 +80,12 @@
                         <outletCollection property="inputFieldCollections" destination="em5-Ko-44U" collectionClass="NSMutableArray" id="uzF-VT-aHH"/>
                         <outletCollection property="inputFieldCollections" destination="S38-Pz-BGu" collectionClass="NSMutableArray" id="rnM-xf-IpK"/>
                         <outletCollection property="inputFieldCollections" destination="MSv-h7-aWh" collectionClass="NSMutableArray" id="gyx-AM-kfs"/>
+                        <segue destination="hZU-lX-YXS" kind="presentation" identifier="cityChatSegue" id="XXc-Sr-YPC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
+            <point key="canvasLocation" x="33" y="139"/>
         </scene>
         <!--Local Chat-->
         <scene sceneID="eXG-EH-sLN">
@@ -101,10 +101,35 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cD2-4D-ccY">
                                 <rect key="frame" x="0.0" y="20" width="375" height="550"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irj-v4-v4h">
+                                        <rect key="frame" x="375" y="0.0" width="0.0" height="550"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifD-S3-gRE">
+                                                <rect key="frame" x="8" y="14" width="67" height="31"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="logout"/>
+                                                <connections>
+                                                    <action selector="logoutButtonPressed:" destination="fRK-JL-t3x" eventType="touchUpInside" id="z0i-XA-Acd"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="550" id="3c0-ob-rjQ"/>
+                                    <constraint firstItem="irj-v4-v4h" firstAttribute="top" secondItem="cD2-4D-ccY" secondAttribute="top" id="TEm-Ih-WEB"/>
+                                    <constraint firstAttribute="bottom" secondItem="irj-v4-v4h" secondAttribute="bottom" id="gxT-f8-169"/>
+                                    <constraint firstItem="irj-v4-v4h" firstAttribute="leading" secondItem="cD2-4D-ccY" secondAttribute="leading" constant="375" id="qYi-h1-b4F"/>
+                                    <constraint firstAttribute="trailing" secondItem="irj-v4-v4h" secondAttribute="trailing" id="tZo-pt-6fH"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="dv3-tk-2bS" appends="YES" id="ezh-eU-DvU"/>
+                                    <outletCollection property="gestureRecognizers" destination="2R2-xS-aei" appends="YES" id="433-VO-gBA"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ty6-dt-FbZ">
                                 <rect key="frame" x="0.0" y="568" width="375" height="2"/>
@@ -127,7 +152,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="80" id="ckX-WG-vof"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="Send"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -142,14 +167,6 @@
                                     <constraint firstItem="H4r-zD-F9T" firstAttribute="leading" secondItem="jHt-KU-MQ0" secondAttribute="leading" constant="8" id="wAk-1e-TC0"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifD-S3-gRE">
-                                <rect key="frame" x="16" y="0.0" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="logout"/>
-                                <connections>
-                                    <action selector="logoutButtonPressed:" destination="fRK-JL-t3x" eventType="touchUpInside" id="z0i-XA-Acd"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -166,13 +183,27 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Local Chat" id="aIR-mH-W4q"/>
                     <connections>
+                        <outlet property="sideMenuLeadingConstraint" destination="qYi-h1-b4F" id="pbx-LU-G4I"/>
+                        <outlet property="sideMenuView" destination="irj-v4-v4h" id="I8e-dL-mRx"/>
+                        <outlet property="textFieldBar" destination="H4r-zD-F9T" id="55j-Xm-slc"/>
                         <segue destination="PQ4-tP-Hrh" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="CjM-QO-Lo6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jxs-jR-8kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="PQ4-tP-Hrh" userLabel="Exit" sceneMemberID="exit"/>
+                <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="dv3-tk-2bS">
+                    <rectEdge key="edges" right="YES"/>
+                    <connections>
+                        <action selector="swipeFromRightEdge:" destination="fRK-JL-t3x" id="2hi-7a-MhK"/>
+                    </connections>
+                </screenEdgePanGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="2R2-xS-aei">
+                    <connections>
+                        <action selector="swipeLeftGesture:" destination="fRK-JL-t3x" id="VTh-Vp-hH5"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1848.8" y="138.98050974512745"/>
+            <point key="canvasLocation" x="1849" y="139"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="qqj-o6-xYB">
@@ -364,10 +395,6 @@
                                 <rect key="frame" x="112" y="404" width="150" height="2"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </progressView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="worldmap" translatesAutoresizingMaskIntoConstraints="NO" id="yfM-TX-Gta">
-                                <rect key="frame" x="0.0" y="118" width="375" height="267"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CityChat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbL-Nd-MYs">
                                 <rect key="frame" x="48" y="56" width="292" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -395,7 +422,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AtA-f6-t2b" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="CWS-gt-mt5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="501.60000000000002" y="-686.80659670164926"/>
+            <point key="canvasLocation" x="466" y="-690"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bwc-kI-dVM">
@@ -417,10 +444,7 @@
             <point key="canvasLocation" x="909.60000000000002" y="841.52923538230891"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="worldmap" width="1920" height="1080"/>
-    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bVw-cs-KM2"/>
+        <segue reference="gRq-FK-6M9"/>
     </inferredMetricsTieBreakers>
 </document>

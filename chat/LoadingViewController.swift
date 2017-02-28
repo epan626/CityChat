@@ -9,10 +9,12 @@
 import UIKit
 import Firebase
 
+
 class LoadingViewController: UIViewController {
     
     //MARK: Outlets
     @IBOutlet weak var progressView: UIProgressView!
+
     
     //MARK: Views
     override func viewDidLoad() {
@@ -22,13 +24,13 @@ class LoadingViewController: UIViewController {
         UIView.animate(withDuration: 2.0, animations: { () -> Void in
             self.progressView.setProgress(0.0, animated: true)
         })
+
     }
     override func viewDidAppear(_ animated: Bool) {
         let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when) {
              self.checkIfUserIsLoggedIn()
         }
-       
     }
     
     //MARK: Helpers
