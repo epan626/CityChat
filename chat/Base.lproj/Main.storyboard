@@ -87,6 +87,93 @@
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
         </scene>
+        <!--Local Chat-->
+        <scene sceneID="eXG-EH-sLN">
+            <objects>
+                <viewController id="fRK-JL-t3x" customClass="ChatroomViewController" customModule="chat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EV0-PK-tA6"/>
+                        <viewControllerLayoutGuide type="bottom" id="syO-4f-M5K"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aDc-hQ-KEl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cD2-4D-ccY">
+                                <rect key="frame" x="0.0" y="20" width="375" height="550"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="550" id="3c0-ob-rjQ"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ty6-dt-FbZ">
+                                <rect key="frame" x="0.0" y="568" width="375" height="2"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="1bC-dp-BLU"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jHt-KU-MQ0">
+                                <rect key="frame" x="0.0" y="568" width="375" height="42"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H4r-zD-F9T">
+                                        <rect key="frame" x="8" y="5" width="271" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPQ-8M-lfh">
+                                        <rect key="frame" x="287" y="6" width="80" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="ckX-WG-vof"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="H4r-zD-F9T" secondAttribute="bottom" constant="7" id="3oz-5Q-N9i"/>
+                                    <constraint firstItem="H4r-zD-F9T" firstAttribute="top" secondItem="jHt-KU-MQ0" secondAttribute="top" constant="5" id="EPr-k1-PAQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="CPQ-8M-lfh" secondAttribute="trailing" constant="8" id="fw3-Mf-aoY"/>
+                                    <constraint firstItem="CPQ-8M-lfh" firstAttribute="top" secondItem="jHt-KU-MQ0" secondAttribute="top" constant="6" id="hGY-KH-Ex5"/>
+                                    <constraint firstAttribute="height" constant="42" id="mQW-ye-d3M"/>
+                                    <constraint firstItem="CPQ-8M-lfh" firstAttribute="leading" secondItem="H4r-zD-F9T" secondAttribute="trailing" constant="8" id="syc-7o-z1l"/>
+                                    <constraint firstAttribute="bottom" secondItem="CPQ-8M-lfh" secondAttribute="bottom" constant="6" id="vc2-DD-xQM"/>
+                                    <constraint firstItem="H4r-zD-F9T" firstAttribute="leading" secondItem="jHt-KU-MQ0" secondAttribute="leading" constant="8" id="wAk-1e-TC0"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifD-S3-gRE">
+                                <rect key="frame" x="16" y="0.0" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="logout"/>
+                                <connections>
+                                    <action selector="logoutButtonPressed:" destination="fRK-JL-t3x" eventType="touchUpInside" id="z0i-XA-Acd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="cD2-4D-ccY" secondAttribute="trailing" id="8gO-EB-cek"/>
+                            <constraint firstItem="ty6-dt-FbZ" firstAttribute="leading" secondItem="aDc-hQ-KEl" secondAttribute="leading" id="9sc-jd-nVL"/>
+                            <constraint firstAttribute="trailing" secondItem="jHt-KU-MQ0" secondAttribute="trailing" id="AOO-Ub-xFF"/>
+                            <constraint firstItem="cD2-4D-ccY" firstAttribute="bottom" secondItem="ty6-dt-FbZ" secondAttribute="bottom" id="EKC-6x-vIW"/>
+                            <constraint firstItem="jHt-KU-MQ0" firstAttribute="top" secondItem="ty6-dt-FbZ" secondAttribute="top" id="LfC-yW-7kq"/>
+                            <constraint firstItem="jHt-KU-MQ0" firstAttribute="leading" secondItem="aDc-hQ-KEl" secondAttribute="leading" id="Vd9-Vz-val"/>
+                            <constraint firstAttribute="trailing" secondItem="ty6-dt-FbZ" secondAttribute="trailing" id="Zue-UY-suC"/>
+                            <constraint firstItem="cD2-4D-ccY" firstAttribute="leading" secondItem="aDc-hQ-KEl" secondAttribute="leading" id="eFe-Zh-qDN"/>
+                            <constraint firstItem="cD2-4D-ccY" firstAttribute="top" secondItem="EV0-PK-tA6" secondAttribute="bottom" id="f7u-IF-4Bd"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Local Chat" id="aIR-mH-W4q"/>
+                    <connections>
+                        <segue destination="PQ4-tP-Hrh" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="CjM-QO-Lo6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jxs-jR-8kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="PQ4-tP-Hrh" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1848.8" y="138.98050974512745"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="qqj-o6-xYB">
             <objects>
@@ -296,6 +383,6 @@
         <image name="write-simple-7" width="29" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gRq-FK-6M9"/>
+        <segue reference="bVw-cs-KM2"/>
     </inferredMetricsTieBreakers>
 </document>

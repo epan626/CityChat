@@ -7,11 +7,21 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatroomViewController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet var chatCollectionView: UICollectionView!
     var containerViewBottomAnchor: NSLayoutConstraint?
+    @IBAction func logoutButtonPressed(_ sender: Any) {
+        do {
+            try FIRAuth.auth()?.signOut()
+            self.performSegue(withIdentifier: "unwindToMain", sender: self)
+        } catch let logoutError {
+            print(logoutError)
+        }
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -122,5 +132,6 @@ class ChatroomViewController: UICollectionViewController, UITextFieldDelegate, U
             self.view.layoutIfNeeded()
         })
     }
-
+    
+    
 }
