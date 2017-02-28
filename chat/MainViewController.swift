@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Outlets
     @IBOutlet weak var nameOutlet: UITextField!
@@ -30,10 +30,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 
     //MARK: Actions
     
@@ -107,11 +103,17 @@ class MainViewController: UIViewController {
         }
     }
     
-
     //MARK: Unwind Segue
 
     @IBAction func unwindToMain(segue: UIStoryboardSegue){}
+    
+    //MARK: Dismiss
+    func dismissKeyboard(){
+        nameOutlet.resignFirstResponder()
+        emailOutlet.resignFirstResponder()
+        passwordOutlet.resignFirstResponder()
+        
+    }
    
-
 }
 
