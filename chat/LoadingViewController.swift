@@ -40,16 +40,12 @@ class LoadingViewController: UIViewController {
             }, withCancel: nil)
             
         } else {
-            let mvc = self.storyboard?.instantiateViewController(withIdentifier: "logRegController")
-            self.present(mvc!, animated: true, completion: nil)
-        }
-    }
-    
-    func handleLogout() {
-        do {
-            try FIRAuth.auth()?.signOut()
-        } catch let logoutError {
-            print(logoutError)
+            let when = DispatchTime.now() + 1.2
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                let mvc = self.storyboard?.instantiateViewController(withIdentifier: "logRegController")
+                self.present(mvc!, animated: true, completion: nil)
+            }
+            
         }
     }
 }
