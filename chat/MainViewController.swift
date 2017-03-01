@@ -73,9 +73,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 guard let uid = user?.uid else {
                     return
                 }
-                let ref = FIRDatabase.database().reference(fromURL: "https://citychat-f1d4f.firebaseio.com/")
+                let ref = FIRDatabase.database().reference()
                 let usersReference = ref.child("users").child(uid)
-                let values = ["name": name, "email": email]
+                let values = ["username": name, "email": email]
                 usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                     if err != nil {
                         print(err!)
@@ -111,6 +111,16 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //MARK: Segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "cityChatSegue" {
+            if let tabVC = segue.destination as? UITabBarController {
+                tabVC.selectedIndex = 1
+            }
+        }
+
+    }
+    
     //MARK: Unwind Segue
 
     @IBAction func unwindToMain(segue: UIStoryboardSegue){}
@@ -120,8 +130,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         nameOutlet.resignFirstResponder()
         emailOutlet.resignFirstResponder()
         passwordOutlet.resignFirstResponder()
-        
     }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         nameOutlet.resignFirstResponder()
         emailOutlet.resignFirstResponder()

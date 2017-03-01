@@ -32,6 +32,11 @@ class LoadingViewController: UIViewController {
              self.checkIfUserIsLoggedIn()
         }
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+            self.progressView.setProgress(2.0, animated: true)
+        })
+    }
     
     //MARK: Helpers
     func checkIfUserIsLoggedIn() {
@@ -48,6 +53,14 @@ class LoadingViewController: UIViewController {
                 self.present(mvc!, animated: true, completion: nil)
             }
             
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "cityChatSegue" {
+            if let tabVC = segue.destination as? UITabBarController {
+                tabVC.selectedIndex = 1
+            }
         }
     }
 }

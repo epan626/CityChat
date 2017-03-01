@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		01AEE0B191D3898509AB7560 /* Pods_chatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A5BCBD44DD8B9EFE5F544C /* Pods_chatUITests.framework */; };
+		072584371E6655DC003D2B25 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072584361E6655DC003D2B25 /* User.swift */; };
+		072584391E665E70003D2B25 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072584381E665E70003D2B25 /* Message.swift */; };
+		0725843B1E666287003D2B25 /* chatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0725843A1E666287003D2B25 /* chatCell.swift */; };
 		074093361E64FF12009408A7 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074093351E64FF12009408A7 /* LoadingViewController.swift */; };
 		0768BCF31E6483C500356E34 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768BCF21E6483C500356E34 /* AppDelegate.swift */; };
 		0768BCF51E6483C500356E34 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768BCF41E6483C500356E34 /* MainViewController.swift */; };
@@ -44,6 +47,9 @@
 
 /* Begin PBXFileReference section */
 		0326FF9A01EC2CE527F53233 /* Pods-chatUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-chatUITests/Pods-chatUITests.release.xcconfig"; sourceTree = "<group>"; };
+		072584361E6655DC003D2B25 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		072584381E665E70003D2B25 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		0725843A1E666287003D2B25 /* chatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = chatCell.swift; sourceTree = "<group>"; };
 		074093351E64FF12009408A7 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		0768BCEF1E6483C500356E34 /* chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768BCF21E6483C500356E34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,12 +134,15 @@
 			children = (
 				0768BCF21E6483C500356E34 /* AppDelegate.swift */,
 				0768BCF41E6483C500356E34 /* MainViewController.swift */,
+				0725843A1E666287003D2B25 /* chatCell.swift */,
 				0768BCF61E6483C500356E34 /* Main.storyboard */,
 				8539B9411E64E193001D852D /* DirectMessageViewController.swift */,
 				8539B93F1E64E030001D852D /* UserListViewController.swift */,
 				8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */,
+				072584381E665E70003D2B25 /* Message.swift */,
 				0768BCFC1E6483C500356E34 /* Assets.xcassets */,
 				074093351E64FF12009408A7 /* LoadingViewController.swift */,
+				072584361E6655DC003D2B25 /* User.swift */,
 				0768BCFE1E6483C500356E34 /* LaunchScreen.storyboard */,
 				0768BD011E6483C500356E34 /* Info.plist */,
 				0768BD231E64C76D00356E34 /* GoogleService-Info.plist */,
@@ -469,7 +478,10 @@
 				074093361E64FF12009408A7 /* LoadingViewController.swift in Sources */,
 				8539B9401E64E030001D852D /* UserListViewController.swift in Sources */,
 				0768BCF51E6483C500356E34 /* MainViewController.swift in Sources */,
+				0725843B1E666287003D2B25 /* chatCell.swift in Sources */,
+				072584391E665E70003D2B25 /* Message.swift in Sources */,
 				0768BCFB1E6483C500356E34 /* chat.xcdatamodeld in Sources */,
+				072584371E6655DC003D2B25 /* User.swift in Sources */,
 				0768BCF31E6483C500356E34 /* AppDelegate.swift in Sources */,
 				8539B93E1E64D5DF001D852D /* ChatroomViewController.swift in Sources */,
 				8539B9421E64E193001D852D /* DirectMessageViewController.swift in Sources */,
