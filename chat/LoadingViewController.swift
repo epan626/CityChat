@@ -12,7 +12,7 @@ import MapKit
 import CoreLocation
 
 
-class LoadingViewController: UIViewController, MKMapViewDelegate {
+class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     //MARK: Outlets
     @IBOutlet weak var progressView: UIProgressView!
@@ -28,6 +28,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager.delegate = self
         loadingMapView.showsUserLocation = true
         currentLocation = locationManager.location
         continueButton.isHidden = true
@@ -39,8 +40,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        let when = DispatchTime.now() + 0.1
-//        let login = DispatchTime.now() + 2.5
+        let when = DispatchTime.now() + 5.0
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
                 self.zoomInOnUserLocation(completion: {
@@ -76,6 +76,17 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
     }
     
     //MARK: Helpers
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus){
+//        print("I AM IN THE DIDCHANGEAUTHORIZATIONSECTION")
+//        if status == CLAuthorizationStatus.denied{
+//            locationManager.requestWhenInUseAuthorization()
+//        } else if status == CLAuthorizationStatus.authorizedAlways{
+//            print("already authorized")
+//        } else{
+//            print("NO MATCH")
+//        }
+    }
+    
     func checkIfUserIsLoggedIn() {
         if FIRAuth.auth()?.currentUser?.uid != nil {
             let uid = FIRAuth.auth()?.currentUser?.uid
@@ -109,9 +120,13 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
                 return
             }
             
+            guard let latitude = self.currentLocation?.coordinate.latitude, let longitude = self.currentLocation?.coordinate.longitude else{
+                print("THE LOCATION IS NOT SET")
+                return
+            }
             
-            let coordinate0 = CLLocation(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: (self.currentLocation?.coordinate.longitude)!)
-            
+            let coordinate0 = CLLocation(latitude: latitude, longitude: longitude)
+
             for city in cities{
                 let comparisonCity = city as! Dictionary<String, Any>
                 let coordinate1 = CLLocation(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
@@ -126,6 +141,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
                     completion()
                 }
             }
+            
             
         }, withCancel: nil)
     }

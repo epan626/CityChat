@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "chat/ChatroomViewController.swift"
-            timestampString = "510086276.527828"
+            timestampString = "510095026.096971"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
             landmarkName = "allChatController"
             landmarkType = "3">
          </BreakpointContent>
