@@ -65,9 +65,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
                     let timeInterval = NSNumber(value: integer)
                     let seconds = timeInterval.doubleValue
                     let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "hh:mm:ss a"
-                    let date = dateFormatter.string(from: timeStampDate as Date)
                     if self.loginTime < timeStampDate as Date {
                          self.messages.append(message)
                     }
@@ -90,6 +87,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
+                print(dictionary)
                 user.setValuesForKeys(dictionary)
                 self.users.append(user)
                 self.chatCollectionView.reloadData()
@@ -106,7 +104,11 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         })
     }
     
+    
     func handleLogoutAndSegue(completion: @escaping () -> ()){
+//        let ref = FIRDatabase.database().reference().child("users")
+//        let user = FIRAuth.auth()!.currentUser!.uid.
+        
         do{
             try FIRAuth.auth()?.signOut()
         } catch {
@@ -171,7 +173,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
                                 cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
                             }
                     }
-                    
                 }
             }, withCancel: nil)
         }
