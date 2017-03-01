@@ -49,9 +49,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
                     let timeInterval = NSNumber(value: integer)
                     let seconds = timeInterval.doubleValue
                     let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "hh:mm:ss a"
-                    let date = dateFormatter.string(from: timeStampDate as Date)
                     if self.loginTime < timeStampDate as Date {
                          self.messages.append(message)
                     }
@@ -148,7 +145,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
                                 cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
                             }
                     }
-                    
                 }
             }, withCancel: nil)
         }

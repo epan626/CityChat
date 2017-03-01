@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import Firebase
 
 class UserListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
+    //MARK: Data
+    
+    //MARK: Outlet
     @IBOutlet weak var userListTableView: UITableView!
     
     override func viewDidLoad() {
@@ -26,9 +30,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = userListTableView.dequeueReusableCell(withIdentifier: "userCell")
-        cell?.backgroundColor = UIColor.blue
-        return cell!
+        let cell = userListTableView.dequeueReusableCell(withIdentifier: "userCell") as! userCell
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
