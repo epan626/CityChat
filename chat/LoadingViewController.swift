@@ -33,7 +33,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
         continueButton.isHidden = true
         loadingMapView.delegate = self
        // progress bar animation
-        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+        UIView.animate(withDuration: 3.0, animations: { () -> Void in
             self.progressView.setProgress(0.0, animated: true)
         })
 

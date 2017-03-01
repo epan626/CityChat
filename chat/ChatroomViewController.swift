@@ -18,6 +18,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var messages = [Message]()
     var city: Dictionary<String, Any>?
     var messageDictionary = [String: Message]()
+    var loginTime = Date()
     
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
@@ -28,6 +29,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     //MARK: View
     override func viewDidLoad() {
+        print(loginTime)
         msgTextField.delegate = self
         super.viewDidLoad()
         setupKeyboardObservers()
@@ -40,11 +42,20 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     func observeMessages(){
         let ref = FIRDatabase.database().reference().child("burbankMessages")
         ref.observe(.childAdded, with: { (snapshot) in
-            
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
                 message.setValuesForKeys(dictionary)
-                self.messages.append(message)
+                if let integer = Int((message.timestamp)!) {
+                    let timeInterval = NSNumber(value: integer)
+                    let seconds = timeInterval.doubleValue
+                    let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "hh:mm:ss a"
+                    let date = dateFormatter.string(from: timeStampDate as Date)
+                    if self.loginTime < timeStampDate as Date {
+                         self.messages.append(message)
+                    }
+                }
                 self.messages.sort(by: { (message1, message2) -> Bool in
                     return Int(message1.timestamp!)! < Int(message2.timestamp!)!
                 })
@@ -109,7 +120,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(messages.count)
         return messages.count
     }
     
@@ -128,15 +138,15 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "hh:mm:ss a"
                         let date = dateFormatter.string(from: timeStampDate as Date)
-                        if message.sender == FIRAuth.auth()?.currentUser?.uid {
-                            cell.usernameOutlet.text  = date
-                            cell.messageOutlet.textAlignment = .right
-                            cell.usernameOutlet.textAlignment = .right
-                        } else {
-                            cell.messageOutlet.textAlignment = .left
-                            cell.usernameOutlet.textAlignment = .left
-                        cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
-                        }
+                            if message.sender == FIRAuth.auth()?.currentUser?.uid {
+                                cell.usernameOutlet.text  = date
+                                cell.messageOutlet.textAlignment = .right
+                                cell.usernameOutlet.textAlignment = .right
+                            } else {
+                                cell.messageOutlet.textAlignment = .left
+                                cell.usernameOutlet.textAlignment = .left
+                                cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
+                            }
                     }
                     
                 }
