@@ -10,6 +10,7 @@ import UIKit
 
 class chatCell: UICollectionViewCell {
     @IBOutlet weak var usernameOutlet: UILabel!
+    @IBOutlet weak var timeStampOutlet: UILabel!
     
     
 }

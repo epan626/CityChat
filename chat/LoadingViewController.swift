@@ -1,4 +1,4 @@
-//
+
 //  LoadingViewController.swift
 //  chat
 //
@@ -8,74 +8,74 @@
 
 import UIKit
 import Firebase
-//import MapKit
-//import CoreLocation
+import MapKit
+import CoreLocation
 
 
-class LoadingViewController: UIViewController {
+class LoadingViewController: UIViewController, MKMapViewDelegate {
     
     //MARK: Outlets
-//    @IBOutlet weak var progressView: UIProgressView!
-//    @IBOutlet weak var loadingMapView: MKMapView!
-//    var currentLocation: CLLocation?
-//    var locationManager = CLLocationManager()
-//    var city: Dictionary<String, Any>?
-//    var cityCoordinates: CLLocationCoordinate2D?
-//    @IBOutlet weak var loadingLabel: UILabel!
-//    @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var loadingMapView: MKMapView!
+    var currentLocation: CLLocation?
+    var locationManager = CLLocationManager()
+    var city: Dictionary<String, Any>?
+    var cityCoordinates: CLLocationCoordinate2D?
+    @IBOutlet weak var loadingLabel: UILabel!
+    @IBOutlet weak var continueButton: UIButton!
     
     //MARK: Views
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        loadingMapView.showsUserLocation = true
-//        currentLocation = locationManager.location
-//        continueButton.isHidden = true
-        FIRDatabase.database().reference().child("city-locations").observe(.value, with: { (snapshot) in
-            print(snapshot)
-        }, withCancel: nil)
-    // progress bar animation
-//        UIView.animate(withDuration: 2.0, animations: { () -> Void in
-//            self.progressView.setProgress(0.0, animated: true)
-//        })
+        loadingMapView.showsUserLocation = true
+        currentLocation = locationManager.location
+        continueButton.isHidden = true
+        loadingMapView.delegate = self
+       // progress bar animation
+        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+            self.progressView.setProgress(0.0, animated: true)
+        })
 
     }
-//    override func viewDidAppear(_ animated: Bool) {
-//        let when = DispatchTime.now() + 5.0
+    override func viewDidAppear(_ animated: Bool) {
+        let when = DispatchTime.now() + 1.0
 //        let login = DispatchTime.now() + 2.5
-//        DispatchQueue.main.asyncAfter(deadline: when) {
-//            self.findChatroom(completion: {
-//                self.zoomInOnUserLocation(completion: {
-//                    let when = DispatchTime.now() + 2.0
-//                    DispatchQueue.main.asyncAfter(deadline: when) {
-//                        if FIRAuth.auth()?.currentUser?.uid != nil {
-//                            self.loadingLabel.isHidden = true
-//                            self.continueButton.addTarget(self, action: #selector(self.performChatDisplaySegue), for: .touchUpInside)
-//                            if let cityName = self.city?["city"]{
-//                                self.continueButton.setTitle("Continue to the \(cityName) chat", for: .normal)
-//                                self.continueButton.isHidden = false
-//                                
-//                            } else{
-//                                self.continueButton.setTitle("Sorry, there are no chatrooms available near you", for: .normal)
-//                                self.continueButton.isHidden = false
-//                            }
-//                            
-//                        } else {
-//                            self.loadingLabel.isHidden = true
-//                            self.continueButton.setTitle("Please login or register to continue", for: .normal)
-//                            self.continueButton.addTarget(self, action: #selector(self.performLogRegSegue), for: .touchUpInside)
-//                            self.continueButton.isHidden = false
-//                        }
-//                    }
-//                })
-//            })
-//        }
-//    }
-//    override func viewWillDisappear(_ animated: Bool) {
-//        UIView.animate(withDuration: 2.0, animations: { () -> Void in
-//            self.progressView.setProgress(2.0, animated: true)
-//        })
-//    }
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.findChatroom(completion: {
+                print("here")
+                self.zoomInOnUserLocation(completion: {
+                    
+                    let when = DispatchTime.now() + 0.5
+                    DispatchQueue.main.asyncAfter(deadline: when) {
+                        if FIRAuth.auth()?.currentUser?.uid != nil {
+                            self.loadingLabel.isHidden = true
+                            self.continueButton.addTarget(self, action: #selector(self.performChatDisplaySegue), for: .touchUpInside)
+                            if let cityName = self.city?["city"]{
+                                self.continueButton.setTitle("Continue to the \(cityName) chat", for: .normal)
+                                self.continueButton.isHidden = false
+                                
+                            } else{
+                                self.continueButton.setTitle("Sorry, there are no chatrooms available near you", for: .normal)
+                                self.continueButton.isHidden = false
+                            }
+                            
+                        } else {
+                            self.loadingLabel.isHidden = true
+                            self.continueButton.setTitle("Please login or register to continue", for: .normal)
+                            self.continueButton.addTarget(self, action: #selector(self.performLogRegSegue), for: .touchUpInside)
+                            self.continueButton.isHidden = false
+                        }
+                    }
+                })
+            })
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+            self.progressView.setProgress(2.0, animated: true)
+        })
+    }
     
     //MARK: Helpers
     func checkIfUserIsLoggedIn() {
@@ -94,54 +94,55 @@ class LoadingViewController: UIViewController {
             
         }
     }
-//    
-//    func zoomInOnUserLocation(completion: @escaping () -> ()){
-//        let cityCenterLocation = CLLocation(latitude: self.city?["lat"] as! CLLocationDegrees, longitude: self.city?["lng"] as! CLLocationDegrees)
-//        let span = MKCoordinateSpanMake(0.09, 0.09)
-//        let region = MKCoordinateRegionMake(cityCenterLocation.coordinate, span)
-//        loadingMapView.setRegion(region, animated: true)
-//        completion()
-//    }
     
-//    func findChatroom(completion: @escaping () -> ()){
-//        print("finding chatroom")
-//        FIRDatabase.database().reference().child("city-locations").observe(.childAdded, with: { (snapshot) in
-//            
+    func zoomInOnUserLocation(completion: @escaping () -> ()){
+        let cityCenterLocation = CLLocation(latitude: self.city?["lat"] as! CLLocationDegrees, longitude: self.city?["lng"] as! CLLocationDegrees)
+        let span = MKCoordinateSpanMake(0.09, 0.09)
+        let region = MKCoordinateRegionMake(cityCenterLocation.coordinate, span)
+        loadingMapView.setRegion(region, animated: true)
+        completion()
+    }
+    
+    func findChatroom(completion: @escaping () -> ()){
+        print("finding chatroom")
+        FIRDatabase.database().reference().child("city-locations").observe(.value, with: { (snapshot) in
+            
 //            print(snapshot)
-//            
-//            guard let cities = snapshot.value as? NSArray else{
-//                return
-//            }
-//            
-//            let coordinate0 = CLLocation(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: (self.currentLocation?.coordinate.longitude)!)
-//            
-//            for city in cities{
-//                let comparisonCity = city as! Dictionary<String, Any>
-//                let coordinate1 = CLLocation(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
-//                let distanceInMeters = coordinate0.distance(from: coordinate1)
-//                print(distanceInMeters)
-//                if distanceInMeters < 5000.00{
-//                    self.city = comparisonCity
-//                    let cityCenterCoordinates = CLLocationCoordinate2D(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
-//                    self.cityCoordinates = cityCenterCoordinates
-//                    let circle = MKCircle(center: cityCenterCoordinates, radius: 5000.00)
-//                    self.loadingMapView.add(circle)
-//                    completion()
-//                }
-//            }
-//            
-//        }, withCancel: nil)
-//    }
-//    
-//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-//        if let overlay = overlay as? MKCircle{
-//            let circleRenderer = MKCircleRenderer(circle: overlay)
-//            circleRenderer.fillColor = UIColor.lightGray
-//            circleRenderer.alpha = 0.3
-//            return circleRenderer
-//        }
-//        return MKOverlayRenderer()
-//    }
+            
+            guard let cities = snapshot.value as? NSArray else{
+                return
+            }
+            
+            
+            let coordinate0 = CLLocation(latitude: (self.currentLocation?.coordinate.latitude)!, longitude: (self.currentLocation?.coordinate.longitude)!)
+            
+            for city in cities{
+                let comparisonCity = city as! Dictionary<String, Any>
+                let coordinate1 = CLLocation(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
+                let distanceInMeters = coordinate0.distance(from: coordinate1)
+                print(distanceInMeters)
+                if distanceInMeters < 5000.00{
+                    self.city = comparisonCity
+                    let cityCenterCoordinates = CLLocationCoordinate2D(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
+                    self.cityCoordinates = cityCenterCoordinates
+                    let circle = MKCircle(center: cityCenterCoordinates, radius: 5000.00)
+                    self.loadingMapView.add(circle)
+                    completion()
+                }
+            }
+            
+        }, withCancel: nil)
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let overlay = overlay as? MKCircle{
+            let circleRenderer = MKCircleRenderer(circle: overlay)
+            circleRenderer.fillColor = UIColor.lightGray
+            circleRenderer.alpha = 0.3
+            return circleRenderer
+        }
+        return MKOverlayRenderer()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "cityChatSegue" {

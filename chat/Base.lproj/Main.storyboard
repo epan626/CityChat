@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qko-bJ-MSz">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qko-bJ-MSz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -134,7 +134,14 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4e-jp-2KI">
-                                                            <rect key="frame" x="19" y="22" width="220" height="32"/>
+                                                            <rect key="frame" x="8" y="16" width="220" height="32"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L6S-ou-SYx">
+                                                            <rect key="frame" x="23" y="35" width="69" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -143,6 +150,7 @@
                                                     </subviews>
                                                 </view>
                                                 <connections>
+                                                    <outlet property="timeStampOutlet" destination="L6S-ou-SYx" id="YRL-sO-7i1"/>
                                                     <outlet property="usernameOutlet" destination="d4e-jp-2KI" id="aKJ-QN-fgr"/>
                                                 </connections>
                                             </collectionViewCell>
@@ -292,7 +300,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AOk-pU-rUl" id="SG7-UA-Q3k">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -383,10 +391,18 @@
                                 <rect key="frame" x="112" y="591" width="150" height="2"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </progressView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="pg8-bO-E1S">
+                                <rect key="frame" x="0.0" y="108" width="375" height="433"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="continueButton" destination="eE8-Qe-VmS" id="TZq-U0-1BK"/>
+                        <outlet property="loadingLabel" destination="ZuI-kx-03P" id="MQW-o3-jhh"/>
+                        <outlet property="loadingMapView" destination="pg8-bO-E1S" id="vwm-V0-VeO"/>
+                        <outlet property="progressView" destination="98a-DO-yYB" id="r3u-ZZ-8Qm"/>
                         <segue destination="hZU-lX-YXS" kind="presentation" identifier="cityChatSegue" id="gRq-FK-6M9"/>
                         <segue destination="CWS-gt-mt5" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="xKM-rm-F3v"/>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="loginRegSegue" id="mSf-qR-PX6"/>
@@ -395,7 +411,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AtA-f6-t2b" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="CWS-gt-mt5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="297" y="-690"/>
+            <point key="canvasLocation" x="296.80000000000001" y="-690.40479760119945"/>
         </scene>
         <!--Direct Message-->
         <scene sceneID="bwc-kI-dVM">
@@ -421,6 +437,6 @@
         <image name="write-simple-7" width="29" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="XXc-Sr-YPC"/>
+        <segue reference="gRq-FK-6M9"/>
     </inferredMetricsTieBreakers>
 </document>

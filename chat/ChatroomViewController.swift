@@ -16,6 +16,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var containerViewBottomAnchor: NSLayoutConstraint?
     var users = [User]()
     var messages = [Message]()
+    
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
     @IBOutlet weak var sideMenuView: UIView!
@@ -111,6 +112,16 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         cell.backgroundColor = UIColor.purple
         let message = messages[indexPath.row]
         cell.usernameOutlet.text = message.sender
+        
+        if let integer = Int((message.timestamp)!) {
+            let timeInterval = NSNumber(value: integer)
+            let seconds = timeInterval.doubleValue
+            let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm:ss a"
+            cell.timeStampOutlet.text = dateFormatter.string(from: timeStampDate as Date)
+        }
+
         return cell
     }
     
