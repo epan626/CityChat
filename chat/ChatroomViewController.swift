@@ -46,7 +46,9 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             }
         },  withCancel: nil)
     }
-    
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
     
     
     //MARK: Fetch
@@ -93,12 +95,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         if sender.direction == .right {
             self.sideMenuViewLeadingContraint.constant = 375
         }
-    }
-   
-    //MARK: Helper
-    
-    override var canBecomeFirstResponder: Bool{
-        return true
     }
     
     //MARK: CollectionView
