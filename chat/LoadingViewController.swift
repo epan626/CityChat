@@ -39,14 +39,12 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        let when = DispatchTime.now() + 1.0
+        let when = DispatchTime.now() + 0.1
 //        let login = DispatchTime.now() + 2.5
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
-                print("here")
                 self.zoomInOnUserLocation(completion: {
-                    
-                    let when = DispatchTime.now() + 0.5
+                    let when = DispatchTime.now() + 0.1
                     DispatchQueue.main.asyncAfter(deadline: when) {
                         if FIRAuth.auth()?.currentUser?.uid != nil {
                             self.loadingLabel.isHidden = true
