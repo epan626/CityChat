@@ -16,12 +16,12 @@ import CoreTelephony
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var locationManager: CLLocationManager?
+//    var locationManager: CLLocationManager?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure()
-        locationManager = CLLocationManager()
-        locationManager?.requestWhenInUseAuthorization()
+//        locationManager = CLLocationManager()
+//        locationManager?.requestWhenInUseAuthorization()
         return true
     }
 
