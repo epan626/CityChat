@@ -16,13 +16,13 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var containerViewBottomAnchor: NSLayoutConstraint?
     var users = [User]()
     var messages = [Message]()
+    var messageDictionary = [String: Message]()
     
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
     @IBOutlet weak var sideMenuView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var msgTextField: UITextField!
-    @IBOutlet weak var nameOutlet: UILabel!
     
     
     //MARK: View
@@ -43,6 +43,9 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
                 let message = Message()
                 message.setValuesForKeys(dictionary)
                 self.messages.append(message)
+                self.messages.sort(by: { (message1, message2) -> Bool in
+                    return Int(message1.timestamp!)! < Int(message2.timestamp!)!
+                })
                 self.chatCollectionView.reloadData()
             }
         },  withCancel: nil)
@@ -104,25 +107,45 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(messages.count)
         return messages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath) as! chatCell
-        cell.backgroundColor = UIColor.purple
         let message = messages[indexPath.row]
-        cell.usernameOutlet.text = message.sender
         
-        if let integer = Int((message.timestamp)!) {
-            let timeInterval = NSNumber(value: integer)
-            let seconds = timeInterval.doubleValue
-            let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh:mm:ss a"
-            cell.timeStampOutlet.text = dateFormatter.string(from: timeStampDate as Date)
+        if let user = message.sender {
+            let ref = FIRDatabase.database().reference().child("users").child(user)
+            ref.observe(.value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    if let integer = Int((message.timestamp)!) {
+                        let timeInterval = NSNumber(value: integer)
+                        let seconds = timeInterval.doubleValue
+                        let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "hh:mm:ss a"
+                        let date = dateFormatter.string(from: timeStampDate as Date)
+                        if message.sender == FIRAuth.auth()?.currentUser?.uid {
+                            cell.usernameOutlet.text  = date
+                            cell.messageOutlet.textAlignment = .right
+                            cell.usernameOutlet.textAlignment = .right
+                        } else {
+                            cell.messageOutlet.textAlignment = .left
+                            cell.usernameOutlet.textAlignment = .left
+                        cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
+                        }
+                    }
+                    
+                }
+            }, withCancel: nil)
         }
-
+        cell.messageOutlet.text = message.text
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
     }
     
     
@@ -144,8 +167,9 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
     
     func handleKeyboardWillHide(notification: NSNotification){
-        containerViewBottomAnchor?.constant = -50
+        containerViewBottomAnchor?.constant = -5
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+        
         UIView.animate(withDuration: keyboardDuration!, animations: {
             self.view.layoutIfNeeded()
         })
