@@ -93,12 +93,12 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     func handleLogoutAndSegue(completion: @escaping () -> ()){
         do{
             try FIRAuth.auth()?.signOut()
-            completion()
         } catch {
             let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
+        completion()
     }
 
     @IBAction func sendButtonPressed(_ sender: UIButton) {
