@@ -16,6 +16,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var containerViewBottomAnchor: NSLayoutConstraint?
     var users = [User]()
     var messages = [Message]()
+    var city: Dictionary<String, Any>?
     
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
@@ -32,6 +33,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         setupKeyboardObservers()
         fetchAllUsers()
         observeMessages()
+        print("THIS IS THE CHATROOM CONTROLLER CITY\(city)")
     }
     
     //MARK: Helper

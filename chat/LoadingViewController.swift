@@ -97,7 +97,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
     
     func zoomInOnUserLocation(completion: @escaping () -> ()){
         let cityCenterLocation = CLLocation(latitude: self.city?["lat"] as! CLLocationDegrees, longitude: self.city?["lng"] as! CLLocationDegrees)
-        let span = MKCoordinateSpanMake(0.09, 0.09)
+        let span = MKCoordinateSpanMake(0.11, 0.11)
         let region = MKCoordinateRegionMake(cityCenterLocation.coordinate, span)
         loadingMapView.setRegion(region, animated: true)
         completion()
@@ -106,8 +106,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
     func findChatroom(completion: @escaping () -> ()){
         print("finding chatroom")
         FIRDatabase.database().reference().child("city-locations").observe(.value, with: { (snapshot) in
-            
-//            print(snapshot)
             
             guard let cities = snapshot.value as? NSArray else{
                 return
@@ -148,6 +146,10 @@ class LoadingViewController: UIViewController, MKMapViewDelegate {
         if segue.identifier == "cityChatSegue" {
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
+            }
+        } else{
+            if let logRegController = segue.destination as? MainViewController{
+                logRegController.city = self.city
             }
         }
     }
