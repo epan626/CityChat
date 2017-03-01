@@ -82,12 +82,19 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     //MARK: Actions
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        do {
-            try FIRAuth.auth()?.signOut()
-            print("logout pressed")
+        handleLogoutAndSegue(completion: {
             self.performSegue(withIdentifier: "unwindToMain", sender: self)
-        } catch let logoutError {
-            print(logoutError)
+        })
+    }
+    
+    func handleLogoutAndSegue(completion: @escaping () -> ()){
+        do{
+            try FIRAuth.auth()?.signOut()
+            completion()
+        } catch {
+            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 

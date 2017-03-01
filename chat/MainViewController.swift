@@ -50,7 +50,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error != nil {
                     print(error!)
-                    let alert = UIAlertController(title: "Invalid", message: "Both email and password are required!", preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController(title: "Invalid", message: "Email or password is incorrect!", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 } else {
