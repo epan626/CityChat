@@ -32,9 +32,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         emailOutlet.delegate = self
         passwordOutlet.delegate = self
         super.viewDidLoad()
-        print(self.city)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print(self.city)
+    }
 
     //MARK: Actions
     
@@ -139,7 +141,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-
     }
     
     //MARK: Unwind Segue

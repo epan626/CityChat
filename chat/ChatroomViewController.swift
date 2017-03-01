@@ -19,6 +19,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var city: Dictionary<String, Any>?
     var messageDictionary = [String: Message]()
     var loginTime = Date()
+    var cityChat: String?
     
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
@@ -33,14 +34,29 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         msgTextField.delegate = self
         super.viewDidLoad()
         setupKeyboardObservers()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        if let userCity = self.city?["city"] as? String{
+            if userCity == "Burbank"{
+                cityChat = "burbankMessages"
+            } else if userCity == "Santa Monica"{
+                cityChat = "santaMonicaMessages"
+            } else if userCity == "San Francisco"{
+                cityChat = "sanFranciscoMessages"
+            } else if userCity == "San Diego"{
+                cityChat = "sanDiegoMessages"
+            } else{
+                cityChat = "noCityNearby"
+            }
+        }
         fetchAllUsers()
         observeMessages()
-        print("THIS IS THE CHATROOM CONTROLLER CITY\(city)")
     }
     
     //MARK: Helper
     func observeMessages(){
-        let ref = FIRDatabase.database().reference().child("burbankMessages")
+        let ref = FIRDatabase.database().reference().child(cityChat!)
         ref.observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()

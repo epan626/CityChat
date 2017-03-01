@@ -160,6 +160,10 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         if segue.identifier == "cityChatSegue" {
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
+                if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
+                    print("I'M SETTING THE CHATROOM CONTROLLER CITY")
+                    chatroomController.city = self.city
+                }
             }
         } else{
             if let logRegController = segue.destination as? MainViewController{
