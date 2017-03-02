@@ -68,6 +68,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
         print(toUser.id)
         print(self.user?.id)
         let directMessageController = self.storyboard?.instantiateViewController(withIdentifier: "DirectMessageController") as? DirectMessageViewController
+//        print(self.user?.id)
+//        print(toUser.id)
         directMessageController?.user = self.user
         directMessageController?.toUser = toUser
         navigationController?.pushViewController(directMessageController!, animated: true)
