@@ -20,6 +20,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var inputFieldCollections: [UITextField]!
     var city: Dictionary<String, Any>?
     var errorText: String?
+    var user = [User]()
     
     //MARK: Views
     override func viewDidLoad() {
@@ -58,6 +59,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     let ref = FIRDatabase.database().reference()
                     let current = FIRAuth.auth()!.currentUser!.uid
+                    FIRDatabase.database().reference().child("users").child(current).observe(.value, with: { (snapshot) in
+                        guard let loggedInUserInfo = snapshot.value as? [String: AnyObject] else{
+                            return
+                        }
+                        let user = User()
+                        user.setValuesForKeys(loggedInUserInfo)
+                        self.user.append(user)
+                    }, withCancel: nil)
                     let rightnow = String(Int(NSDate().timeIntervalSince1970))
                     ref.child("users").child(current).updateChildValues(["loggedOn": "true", "lastLogged": rightnow])
                     self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
@@ -97,7 +106,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 }
                 let ref = FIRDatabase.database().reference()
                 let usersReference = ref.child("users").child(uid)
-                                
+                
                 let rightnow = String(Int(NSDate().timeIntervalSince1970))
                 let values = ["username": name, "email": email, "loggedOn": "true", "lastLogged": rightnow, "id": uid] as [String : Any]
                 usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
@@ -107,7 +116,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                     } else {
                         print(ref)
                     }
-                    self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
+                    FIRDatabase.database().reference().child("users").child(uid).observe(.value, with: { (snapshot) in
+                        
+                        guard let dictionary = snapshot.value as? [String: AnyObject] else{
+                            return
+                        }
+                        
+                        print(dictionary)
+                        let user = User()
+                        user.setValuesForKeys(dictionary)
+                        print(user.username)
+                        self.user.append(user)
+                        self.performSegue(withIdentifier: "cityChatSegue", sender: user)
+                    }, withCancel: nil)
                 })
             })
         }
@@ -143,12 +164,20 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if segue.identifier == "cityChatSegue" {
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
+                let loggedUser = self.user[0]
                 if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
-                    print("I'M SETTING THE CHATROOM CONTROLLER CITY")
+                    chatroomController.user = loggedUser
                     chatroomController.city = self.city
+                }
+                if let navController = tabVC.viewControllers?[0] as? UINavigationController{
+                    if let userListController = navController.topViewController as? UserListViewController{
+                        print("I'M SETTING THE DIRECT MESSAGE CONTROLLER USER")
+                        userListController.user = loggedUser
+                    }
                 }
             }
         }
+        
     }
     
     //MARK: Unwind Segue
