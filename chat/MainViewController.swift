@@ -93,7 +93,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 }
                 let ref = FIRDatabase.database().reference()
                 let usersReference = ref.child("users").child(uid)
-                let values = ["username": name, "email": email, "loggedOn": "true"] as [String : Any]
+                let values = ["username": name, "email": email, "loggedOn": "true", "id": uid] as [String : Any]
                 usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                     if err != nil {
                         print(err!)

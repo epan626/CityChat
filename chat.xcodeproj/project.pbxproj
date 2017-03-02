@@ -272,7 +272,7 @@
 				TargetAttributes = {
 					0768BCEE1E6483C500356E34 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = CC4A7GJE49;
+						DevelopmentTeam = 225XNVWBRP;
 						ProvisioningStyle = Automatic;
 					};
 					0768BD051E6483C500356E34 = {
@@ -642,11 +642,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = CC4A7GJE49;
+				DEVELOPMENT_TEAM = 225XNVWBRP;
 				INFOPLIST_FILE = chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = eric.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = charlie.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -658,11 +658,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = CC4A7GJE49;
+				DEVELOPMENT_TEAM = 225XNVWBRP;
 				INFOPLIST_FILE = chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = eric.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = charlie.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

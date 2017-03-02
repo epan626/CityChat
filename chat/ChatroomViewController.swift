@@ -20,6 +20,8 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var messageDictionary = [String: Message]()
     var loginTime = Date()
     var cityChat: String?
+    var user: User?
+    var flag = true
     
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
@@ -34,29 +36,39 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         msgTextField.delegate = self
         super.viewDidLoad()
         setupKeyboardObservers()
+
+        print("WE ARE IN THE ALL CHAT CONTROLLER")
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
         if let userCity = self.city?["city"] as? String{
             if userCity == "Burbank"{
-                cityChat = "burbankMessages"
+                self.cityChat = "burbankMessages"
             } else if userCity == "Santa Monica"{
-                cityChat = "santaMonicaMessages"
+                self.cityChat = "santaMonicaMessages"
             } else if userCity == "San Francisco"{
-                cityChat = "sanFranciscoMessages"
+                self.cityChat = "sanFranciscoMessages"
             } else if userCity == "San Diego"{
-                cityChat = "sanDiegoMessages"
+                self.cityChat = "sanDiegoMessages"
             } else{
-                cityChat = "noCityNearby"
+                self.cityChat = "noCityNearby"
             }
         }
-        fetchAllUsers()
-        observeMessages()
+        if flag == true{
+            fetchAllUsers()
+            observeMessages()
+            self.flag = false
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: Helper
     func observeMessages(){
-        let ref = FIRDatabase.database().reference().child(cityChat!)
+        let ref = FIRDatabase.database().reference().child(self.cityChat!)
         ref.observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
@@ -120,7 +132,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
 
     @IBAction func sendButtonPressed(_ sender: UIButton) {
-        let ref = FIRDatabase.database().reference().child("burbankMessages")
+        let ref = FIRDatabase.database().reference().child(cityChat!)
         let childRef = ref.childByAutoId()
         let sender = FIRAuth.auth()!.currentUser!.uid
         let timestamp = String(Int(NSDate().timeIntervalSince1970))

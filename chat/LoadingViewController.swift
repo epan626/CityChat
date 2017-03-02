@@ -23,14 +23,22 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     var cityCoordinates: CLLocationCoordinate2D?
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var continueButton: UIButton!
+    var user: User?
     
     //MARK: Views
     override func viewDidLoad() {
+
         super.viewDidLoad()
+
+        let when = DispatchTime.now() + 20.0
+        DispatchQueue.main.asyncAfter(deadline: when) { 
+            self.loadingMapView.showsUserLocation = true
+            self.currentLocation = self.locationManager.location
+        }
         
         locationManager.delegate = self
-        loadingMapView.showsUserLocation = true
-        currentLocation = locationManager.location
+//        loadingMapView.showsUserLocation = true
+//        currentLocation = locationManager.location
         continueButton.isHidden = true
         loadingMapView.delegate = self
        // progress bar animation
@@ -40,7 +48,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        let when = DispatchTime.now() + 5.0
+        let when = DispatchTime.now() + 30.0
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
                 self.zoomInOnUserLocation(completion: {
@@ -91,6 +99,10 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         if FIRAuth.auth()?.currentUser?.uid != nil {
             let uid = FIRAuth.auth()?.currentUser?.uid
             FIRDatabase.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let dictionary = snapshot.value as? [String: AnyObject] else{
+                    return
+                }
+                self.user?.setValuesForKeys(dictionary)
                 self.performSegue(withIdentifier: "cityChatSegue", sender: snapshot)
             }, withCancel: nil)
             
@@ -132,11 +144,11 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 let coordinate1 = CLLocation(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
                 let distanceInMeters = coordinate0.distance(from: coordinate1)
                 print(distanceInMeters)
-                if distanceInMeters < 5000.00{
+                if distanceInMeters < 7500.00{
                     self.city = comparisonCity
                     let cityCenterCoordinates = CLLocationCoordinate2D(latitude: comparisonCity["lat"] as! CLLocationDegrees, longitude: comparisonCity["lng"] as! CLLocationDegrees)
                     self.cityCoordinates = cityCenterCoordinates
-                    let circle = MKCircle(center: cityCenterCoordinates, radius: 5000.00)
+                    let circle = MKCircle(center: cityCenterCoordinates, radius: 7500.00)
                     self.loadingMapView.add(circle)
                     completion()
                 }
@@ -162,7 +174,11 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 tabVC.selectedIndex = 1
                 if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
                     print("I'M SETTING THE CHATROOM CONTROLLER CITY")
+                    chatroomController.user = self.user
                     chatroomController.city = self.city
+                }
+                if let userlistViewController = tabVC.viewControllers?[0] as? UserListViewController{
+                    userlistViewController.user = self.user
                 }
             }
         } else{

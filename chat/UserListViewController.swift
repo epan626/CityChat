@@ -14,6 +14,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     //MARK: Data
     var users = [User]()
     var loginTime = Date()
+    var user: User?
+    
     //MARK: Outlet
     @IBOutlet weak var userListTableView: UITableView!
     
@@ -28,6 +30,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
+                user.id = snapshot.key
                 user.setValuesForKeys(dictionary)
                 self.users.append(user)
                 self.userListTableView.reloadData()
@@ -68,7 +71,10 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let directMessageController = self.storyboard?.instantiateViewController(withIdentifier: "DirectMessageController")
+        let toUser = users[indexPath.row]
+        let directMessageController = self.storyboard?.instantiateViewController(withIdentifier: "DirectMessageController") as? DirectMessageViewController
+        directMessageController?.user = self.user
+        directMessageController?.toUser = toUser
         navigationController?.pushViewController(directMessageController!, animated: true)
     }
 
