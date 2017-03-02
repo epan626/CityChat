@@ -26,8 +26,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
 
     
     //Outlets
-//    @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
-    
     @IBOutlet weak var parentSideMenuView: UIView!
     @IBOutlet weak var sideMenuView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
@@ -41,7 +39,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         msgTextField.delegate = self
         super.viewDidLoad()
         setupKeyboardObservers()
-
         print("WE ARE IN THE ALL CHAT CONTROLLER")
         chatCollectionView?.register(AllChatMessageCell.self, forCellWithReuseIdentifier: "allChatCell")
         inputContainerViewBottomAnchor = self.inputContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
@@ -162,10 +159,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     @IBAction func swipeFromRightEdge(_ sender: UIScreenEdgePanGestureRecognizer) {
         UIView.animate(withDuration: 0.2, animations: {
             self.containerViewOutlet.sendSubview(toBack: self.chatCollectionView)
-//             print("swipe")
             self.containerViewOutlet.bringSubview(toFront: self.parentSideMenuView)
-//            self.sideMenuView.widthAnchor.constraint(equalToConstant: 90)
-            print("swipe")
             self.sideMenuViewTrailingConstraint.constant = -20
             self.parentSideMenuView.alpha = 1.0
              self.chatCollectionView.alpha = 0.3
@@ -174,8 +168,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             self.sideMenuView.alpha = 1.0
             self.sideMenuView.backgroundColor = UIColor.init(red: 46/255, green: 139/255, blue: 87/255, alpha: 1.0)
             self.parentSideMenuView.widthAnchor.constraint(equalToConstant: 0)
-//            self.parentSideMenuView.backgroundColor?.withAlphaComponent(0.5)
-//            self.sideMenuViewLeadingContraint.constant = 285
         })
     }
     @IBAction func swipeLeftGesture(_ sender: UISwipeGestureRecognizer) {
@@ -187,7 +179,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             self.chatCollectionView.alpha = 1
              self.parentSideMenuView.widthAnchor.constraint(equalToConstant: 375)
             self.chatCollectionView.backgroundColor = UIColor.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
-//            self.parentSideMenuView.backgroundColor = UIColor.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.3)
         }
     }
     
