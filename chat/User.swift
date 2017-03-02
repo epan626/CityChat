@@ -13,4 +13,5 @@ class User: NSObject {
     var username: String?
     var email: String?
     var loggedOn: String?
+    var lastLogged: String?
 }

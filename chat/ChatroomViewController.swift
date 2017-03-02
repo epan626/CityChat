@@ -32,7 +32,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     //MARK: View
     override func viewDidLoad() {
-        print(loginTime)
         msgTextField.delegate = self
         super.viewDidLoad()
         setupKeyboardObservers()
@@ -99,7 +98,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
-                print(dictionary)
                 user.setValuesForKeys(dictionary)
                 self.users.append(user)
                 self.chatCollectionView.reloadData()
@@ -112,15 +110,16 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     //MARK: Actions
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
         handleLogoutAndSegue(completion: {
+
             self.performSegue(withIdentifier: "unwindToMain", sender: self)
         })
     }
     
     
     func handleLogoutAndSegue(completion: @escaping () -> ()){
-//        let ref = FIRDatabase.database().reference().child("users")
-//        let user = FIRAuth.auth()!.currentUser!.uid.
-        
+        let current = FIRAuth.auth()!.currentUser!.uid
+        let ref = FIRDatabase.database().reference()
+        ref.child("users").child(current).updateChildValues(["loggedOn": "false"])
         do{
             try FIRAuth.auth()?.signOut()
         } catch {

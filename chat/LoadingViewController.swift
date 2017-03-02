@@ -35,7 +35,16 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             self.loadingMapView.showsUserLocation = true
             self.currentLocation = self.locationManager.location
         }
+//        do{
+//            try FIRAuth.auth()?.signOut()
+//        } catch {
+//            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+//            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//        }
         
+    
+
         locationManager.delegate = self
 //        loadingMapView.showsUserLocation = true
 //        currentLocation = locationManager.location

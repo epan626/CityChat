@@ -13,8 +13,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
 
     //MARK: Data
     var users = [User]()
-    var loginTime = Date()
     var user: User?
+    var loginTime = String(Int(NSDate().timeIntervalSince1970))
     
     //MARK: Outlet
     @IBOutlet weak var userListTableView: UITableView!
@@ -23,12 +23,14 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     //MARK: Views
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.fetchAllUsers()
     }
     
     //MARK: Fetch
     func fetchAllUsers() {
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
+                print(snapshot)
                 let user = User()
                 user.id = snapshot.key
                 user.setValuesForKeys(dictionary)
@@ -44,29 +46,30 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(users.count)
         return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = userListTableView.dequeueReusableCell(withIdentifier: "userCell") as! userCell
-        
-//        let user = users[indexPath.row]
+        let user = users[indexPath.row]
 //        let ref = FIRDatabase.database().reference().child("users").child(user.username!)
 //        ref.observe(.value, with: { (snapshot) in
 //            if let dictionary = snapshot.value as? [String: AnyObject] {
 //                print(snapshot.value)
-//                if let integer = Int(loginTime)! {
-//                    let timeInterval = NSNumber(value: integer)
-//                    let seconds = timeInterval.doubleValue
-//                    let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-//                    let dateFormatter = DateFormatter()
-//                    dateFormatter.dateFormat = "hh:mm:ss a"
-//                    let date = dateFormatter.string(from: timeStampDate as Date)
-//                }
+//
 //            }
 //        }, withCancel: nil)
-        
-        cell.usernameOutlet.text = "hey"
+        if let integer = Int(loginTime) {
+            let timeInterval = NSNumber(value: integer)
+            let seconds = timeInterval.doubleValue
+            let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm:ss a"
+            let date = dateFormatter.string(from: timeStampDate as Date)
+            cell.onlineTimeOutlet.text = date
+        }
+        cell.usernameOutlet.text = user.username
         return cell
     }
     
