@@ -19,6 +19,9 @@ class LoadingViewController: UIViewController {
     //MARK: Views
     override func viewDidLoad() {
         super.viewDidLoad()
+        FIRDatabase.database().reference().child("city-locations").observe(.childAdded, with: { (snapshot) in
+            print(snapshot)
+        }, withCancel: nil)
         
     // progress bar animation
         UIView.animate(withDuration: 2.0, animations: { () -> Void in
