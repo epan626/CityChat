@@ -32,7 +32,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         emailOutlet.delegate = self
         passwordOutlet.delegate = self
         super.viewDidLoad()
-        print(self.city)
     }
     
 
@@ -54,6 +53,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                     alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 } else {
+                    let ref = FIRDatabase.database().reference()
+                    let current = FIRAuth.auth()!.currentUser!.uid
+                    let rightnow = String(Int(NSDate().timeIntervalSince1970))
+                    ref.child("users").child(current).updateChildValues(["loggedOn": "true", "lastLogged": rightnow])
                     self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 }
             })
@@ -91,7 +94,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 }
                 let ref = FIRDatabase.database().reference()
                 let usersReference = ref.child("users").child(uid)
-                let values = ["username": name, "email": email, "loggedOn": "true"] as [String : Any]
+                let rightnow = String(Int(NSDate().timeIntervalSince1970))
+                let values = ["username": name, "email": email, "loggedOn": "true", "lastLogged": rightnow] as [String : Any]
                 usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                     if err != nil {
                         print(err!)
