@@ -270,6 +270,7 @@
                     <connections>
                         <outlet property="chatCollectionView" destination="zvG-0D-zZG" id="en6-oV-6qa"/>
                         <outlet property="containerViewBottomAnchor" destination="2h2-OD-4Q1" id="wH2-T7-a9Q"/>
+                        <outlet property="inputContainerView" destination="jHt-KU-MQ0" id="0mK-Kp-BcZ"/>
                         <outlet property="msgTextField" destination="H4r-zD-F9T" id="Gbd-Kx-upa"/>
                         <outlet property="sideMenuView" destination="WBZ-Rx-SCX" id="6ME-BF-eOP"/>
                         <outlet property="sideMenuViewLeadingContraint" destination="xCD-qi-imH" id="6a6-zy-WPK"/>

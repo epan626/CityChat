@@ -22,13 +22,14 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var cityChat: String?
     var user: User?
     var flag = true
+    var inputContainerViewBottomAnchor: NSLayoutConstraint?
     
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
     @IBOutlet weak var sideMenuView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var msgTextField: UITextField!
-    
+    @IBOutlet weak var inputContainerView: UIView!
     
     //MARK: View
     override func viewDidLoad() {
@@ -38,7 +39,8 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
 
         print("WE ARE IN THE ALL CHAT CONTROLLER")
         chatCollectionView?.register(AllChatMessageCell.self, forCellWithReuseIdentifier: "allChatCell")
-        
+        inputContainerViewBottomAnchor = self.inputContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
+        inputContainerViewBottomAnchor?.isActive = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -146,8 +148,10 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         }
         let values = ["text": msgTextField.text!, "sender": sender, "timestamp": timestamp, "username": username] as [String : Any]
         childRef.updateChildValues(values)
-        
+        let indexPath = IndexPath(row: messages.count - 1, section: 0)
+        chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
     }
+    
     @IBAction func swipeFromRightEdge(_ sender: UIScreenEdgePanGestureRecognizer) {
         UIView.animate(withDuration: 2.0, animations: {
             self.sideMenuViewLeadingContraint.constant = 250
@@ -172,39 +176,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "allChatCell", for: indexPath) as! AllChatMessageCell
         let message = messages[indexPath.row]
         
-//        if let user = message.sender {
-//            let ref = FIRDatabase.database().reference().child("users").child(user)
-//            ref.observe(.value, with: { (snapshot) in
-//                if let dictionary = snapshot.value as? [String: AnyObject] {
-//                    if let integer = Int((message.timestamp)!) {
-//                        let timeInterval = NSNumber(value: integer)
-//                        let seconds = timeInterval.doubleValue
-//                        let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-//                        let dateFormatter = DateFormatter()
-//                        dateFormatter.dateFormat = "hh:mm:ss a"
-//                        let date = dateFormatter.string(from: timeStampDate as Date)
-//                            if message.sender == FIRAuth.auth()?.currentUser?.uid {
-//                                cell.detailTextLabel.text = date
-//                                cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
-//                                cell.textView.textColor = UIColor.white
-//                                cell.detailTextLabel.textColor = UIColor.white
-//                                cell.bubbleViewRightAnchor?.isActive = true
-//                                cell.bubbleViewLeftAnchor?.isActive = false
-//                                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 42
-//
-//                            } else{
-//                                cell.detailTextLabel.text = (dictionary["username"] as? String)! + " - " + date
-//                                cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
-//                                cell.textView.textColor = UIColor.black
-//                                cell.detailTextLabel.textColor = UIColor.black
-//                                cell.bubbleViewRightAnchor?.isActive = false
-//                                cell.bubbleViewLeftAnchor?.isActive = true
-//                                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 60
-//                            }
-//                    }
-//                }
-//            }, withCancel: nil)
-//        }
         let sender = message.sender
         if let integer = Int((message.timestamp)!) {
             let timeInterval = NSNumber(value: integer)
@@ -257,23 +228,32 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         
     }
     
+    func handleKeyboardDidShow(){
+        if messages.count > 0{
+            let indexPath = IndexPath(row: messages.count - 1, section: 0)
+            chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
+    }
+    
     func handleKeyboardWillShow(notification: NSNotification){
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        containerViewBottomAnchor?.constant = -keyboardFrame!.height
+        inputContainerViewBottomAnchor?.constant = -keyboardFrame!.height
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-        UIView.animate(withDuration: keyboardDuration!, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.handleKeyboardDidShow()
             self.view.layoutIfNeeded()
         })
     }
     
     func handleKeyboardWillHide(notification: NSNotification){
-        containerViewBottomAnchor?.constant = -5
+        inputContainerViewBottomAnchor?.constant = -60
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-        
-        UIView.animate(withDuration: keyboardDuration!, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.handleKeyboardDidShow()
             self.view.layoutIfNeeded()
         })
     }
+
     
     //MARK: Dismiss
     func dismissKeyboard(){
