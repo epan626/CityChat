@@ -61,7 +61,6 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
                 print(dictionary)
                 let message = Message()
                 message.setValuesForKeys(dictionary)
-                print(message.text)
                 self.messages.append(message)
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
@@ -82,7 +81,7 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
             let childRef = ref.childByAutoId()
             let toId = self.toUser?.id
             let fromId = self.user?.id
-            print(fromId)
+
             let timestamp = String(Int(NSDate().timeIntervalSince1970))
             let message = self.textField.text!
             let values: [String: AnyObject] = ["receiver": toId as AnyObject, "sender": fromId as AnyObject, "timestamp": timestamp as AnyObject, "text": message as AnyObject]

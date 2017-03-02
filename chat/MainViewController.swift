@@ -66,10 +66,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                         let user = User()
                         user.setValuesForKeys(loggedInUserInfo)
                         self.user.append(user)
+                        let rightnow = String(Int(NSDate().timeIntervalSince1970))
+                        ref.child("users").child(current).updateChildValues(["loggedOn": "true", "lastLogged": rightnow])
+                        self.performSegue(withIdentifier: "cityChatSegue", sender: user)
                     }, withCancel: nil)
-                    let rightnow = String(Int(NSDate().timeIntervalSince1970))
-                    ref.child("users").child(current).updateChildValues(["loggedOn": "true", "lastLogged": rightnow])
-                    self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 }
             })
             
