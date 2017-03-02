@@ -37,8 +37,10 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                 self.users.append(user)
 //                self.userListTableView.reloadData()
                 if user.loggedOn == "true" {
-                    self.loggedOnUsers.append(user)
-                    self.userListTableView.reloadData()
+                    if user.id != FIRAuth.auth()?.currentUser?.uid {
+                        self.loggedOnUsers.append(user)
+                        self.userListTableView.reloadData()
+                    }
                 }
             }
         }, withCancel: nil)
