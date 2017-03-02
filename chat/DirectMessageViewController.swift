@@ -20,7 +20,8 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
         super.viewDidLoad()
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
-        
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: "chatCell")
+
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView?.backgroundColor = UIColor.white
         collectionView?.alwaysBounceVertical = true
@@ -126,7 +127,7 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return messages.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
