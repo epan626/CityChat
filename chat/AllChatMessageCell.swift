@@ -1,20 +1,18 @@
 //
-//  ChatMessageCell.swift
+//  AllChatMessageCell.swift
 //  chat
 //
-//  Created by Charles Paisan on 3/1/17.
+//  Created by Charles Paisan on 3/2/17.
 //  Copyright © 2017 Eric Pan. All rights reserved.
 //
 
-
-import Foundation
 import UIKit
 import AVFoundation
 
-class ChatMessageCell: UICollectionViewCell{
+class AllChatMessageCell: UICollectionViewCell{
     
     var message: Message?
-
+    
     let textView: UITextView = {
         let tv = UITextView()
         tv.font = UIFont.systemFont(ofSize: 16)
@@ -35,7 +33,17 @@ class ChatMessageCell: UICollectionViewCell{
         view.layer.masksToBounds = true
         return view
     }()
-
+    
+    let detailTextLabel: UITextField = {
+        let detailLabel = UITextField()
+        detailLabel.textColor = UIColor.white
+        detailLabel.font = UIFont.systemFont(ofSize: 12)
+        detailLabel.translatesAutoresizingMaskIntoConstraints = false
+        detailLabel.layer.masksToBounds = true
+        return detailLabel
+    }()
+    
+    
     
     var bubbleWidthAnchor: NSLayoutConstraint?
     var bubbleViewRightAnchor: NSLayoutConstraint?
@@ -47,12 +55,7 @@ class ChatMessageCell: UICollectionViewCell{
         
         addSubview(bubbleView)
         addSubview(textView)
-        
-        //textView constraints
-        textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
-        textView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
-        textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        addSubview(detailTextLabel)
         
         //bubbleView constraints
         bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
@@ -62,7 +65,20 @@ class ChatMessageCell: UICollectionViewCell{
         bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
         bubbleWidthAnchor?.isActive = true
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-
+        
+        //textView constraints
+        textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
+        textView.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor, constant: 4).isActive = true
+        textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
+        textView.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: 8).isActive = true
+//        textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        
+        detailTextLabel.topAnchor.constraint(equalTo: bubbleView.topAnchor, constant: 8).isActive = true
+//        detailTextLabel.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -8).isActive = true
+        detailTextLabel.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
+        detailTextLabel.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 10).isActive = true
+        detailTextLabel.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -8).isActive = true
+        
         
     }
     

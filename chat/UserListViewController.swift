@@ -26,10 +26,6 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
         self.fetchAllUsers()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print(self.user)
-    }
-    
     //MARK: Fetch
     func fetchAllUsers() {
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
@@ -50,7 +46,6 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(users.count)
         return users.count
     }
     
@@ -78,6 +73,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(self.user)
         let toUser = users[indexPath.row]
         let directMessageController = self.storyboard?.instantiateViewController(withIdentifier: "DirectMessageController") as? DirectMessageViewController
         directMessageController?.user = self.user

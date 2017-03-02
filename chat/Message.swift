@@ -13,4 +13,5 @@ class Message: NSObject {
     var text: String?
     var timestamp: String?
     var receiver: String?
+    var username: String?
 }

@@ -23,7 +23,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     var cityCoordinates: CLLocationCoordinate2D?
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var continueButton: UIButton!
-    var user: User?
+    var user = [User]()
     var test: String?
     
     //MARK: Views
@@ -71,8 +71,9 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                                 guard let loggedInUserInfo = snapshot.value as? [String: AnyObject] else{
                                     return
                                 }
-                                print(loggedInUserInfo)
-
+                                let user = User()
+                                user.setValuesForKeys(loggedInUserInfo)
+                                self.user.append(user)
                             }, withCancel: nil)
                             self.loadingLabel.isHidden = true
                             self.continueButton.addTarget(self, action: #selector(self.performChatDisplaySegue), for: .touchUpInside)
@@ -121,7 +122,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 guard let dictionary = snapshot.value as? [String: AnyObject] else{
                     return
                 }
-                self.user?.setValuesForKeys(dictionary)
                 self.performSegue(withIdentifier: "cityChatSegue", sender: snapshot)
             }, withCancel: nil)
             
@@ -191,15 +191,15 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         if segue.identifier == "cityChatSegue" {
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
+                let loggedUser = self.user[0]
                 if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
-                    chatroomController.user = self.user
+                    chatroomController.user = loggedUser
                     chatroomController.city = self.city
                 }
                 if let navController = tabVC.viewControllers?[0] as? UINavigationController{
                     if let userListController = navController.topViewController as? UserListViewController{
                         print("I'M SETTING THE DIRECT MESSAGE CONTROLLER USER")
-                        print(self.user)
-                        userListController.user = self.user
+                        userListController.user = loggedUser
                     }
                 }
             }
