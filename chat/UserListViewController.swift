@@ -57,22 +57,6 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = userListTableView.dequeueReusableCell(withIdentifier: "userCell") as! userCell
         let user = loggedOnUsers[indexPath.row]
-//        let ref = FIRDatabase.database().reference().child("users").child(user.username!)
-//        ref.observe(.value, with: { (snapshot) in
-//            if let dictionary = snapshot.value as? [String: AnyObject] {
-//                print(snapshot.value)
-//
-//            }
-//        }, withCancel: nil)
-        if let integer = Int(loginTime) {
-            let timeInterval = NSNumber(value: integer)
-            let seconds = timeInterval.doubleValue
-            let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh:mm:ss a"
-            let date = dateFormatter.string(from: timeStampDate as Date)
-//            cell.onlineTimeOutlet.text = "Online"
-        }
         cell.usernameOutlet.text = user.username
         return cell
     }

@@ -23,9 +23,11 @@
 		0768BD241E64C76D00356E34 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0768BD231E64C76D00356E34 /* GoogleService-Info.plist */; };
 		07EA15EB1E67804900E78F20 /* userCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EA15EA1E67804900E78F20 /* userCell.swift */; };
 		1988F3C1FC66E38F40AB819A /* Pods_chatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA6AC37200C897E02F3DF4F /* Pods_chatTests.framework */; };
+		85235AB91E68970700C51D69 /* AllChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85235AB81E68970700C51D69 /* AllChatMessageCell.swift */; };
 		8539B93E1E64D5DF001D852D /* ChatroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */; };
 		8539B9401E64E030001D852D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539B93F1E64E030001D852D /* UserListViewController.swift */; };
 		8539B9421E64E193001D852D /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539B9411E64E193001D852D /* DirectMessageViewController.swift */; };
+		854EE9C91E67C522007045C3 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854EE9C81E67C522007045C3 /* ChatMessageCell.swift */; };
 		DE6E5D1C3592D1E6A58915DC /* Pods_chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C77A4A2862ECBD71B8E21D /* Pods_chat.framework */; };
 /* End PBXBuildFile section */
 
@@ -72,9 +74,11 @@
 		302690DB798B63020C962567 /* Pods-chatUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-chatUITests/Pods-chatUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		500D8B2BB75F132F93713C27 /* Pods-chatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-chatTests/Pods-chatTests.release.xcconfig"; sourceTree = "<group>"; };
 		75C77A4A2862ECBD71B8E21D /* Pods_chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		85235AB81E68970700C51D69 /* AllChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllChatMessageCell.swift; sourceTree = "<group>"; };
 		8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatroomViewController.swift; sourceTree = "<group>"; };
 		8539B93F1E64E030001D852D /* UserListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		8539B9411E64E193001D852D /* DirectMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
+		854EE9C81E67C522007045C3 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		89BBD00AAD733445B09E37C1 /* Pods-chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chat.release.xcconfig"; path = "Pods/Target Support Files/Pods-chat/Pods-chat.release.xcconfig"; sourceTree = "<group>"; };
 		A5FB169E93B4539824C1E7A2 /* Pods-chatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-chatTests/Pods-chatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFA6AC37200C897E02F3DF4F /* Pods_chatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +143,8 @@
 				0725843A1E666287003D2B25 /* chatCell.swift */,
 				0768BCF61E6483C500356E34 /* Main.storyboard */,
 				8539B9411E64E193001D852D /* DirectMessageViewController.swift */,
+				854EE9C81E67C522007045C3 /* ChatMessageCell.swift */,
+				85235AB81E68970700C51D69 /* AllChatMessageCell.swift */,
 				8539B93F1E64E030001D852D /* UserListViewController.swift */,
 				8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */,
 				07EA15EA1E67804900E78F20 /* userCell.swift */,
@@ -486,7 +492,9 @@
 				0768BCFB1E6483C500356E34 /* chat.xcdatamodeld in Sources */,
 				07EA15EB1E67804900E78F20 /* userCell.swift in Sources */,
 				072584371E6655DC003D2B25 /* User.swift in Sources */,
+				85235AB91E68970700C51D69 /* AllChatMessageCell.swift in Sources */,
 				0768BCF31E6483C500356E34 /* AppDelegate.swift in Sources */,
+				854EE9C91E67C522007045C3 /* ChatMessageCell.swift in Sources */,
 				8539B93E1E64D5DF001D852D /* ChatroomViewController.swift in Sources */,
 				8539B9421E64E193001D852D /* DirectMessageViewController.swift in Sources */,
 			);

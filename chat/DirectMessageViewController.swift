@@ -20,7 +20,8 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
         super.viewDidLoad()
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
-        
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: "chatCell")
+
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView?.backgroundColor = UIColor.white
         collectionView?.alwaysBounceVertical = true
@@ -28,6 +29,7 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
         
         observeMessages()
     }
+    
     
     override var inputAccessoryView: UIView?{
         get{
@@ -65,7 +67,7 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
                     let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
                     self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                 }
-                
+//
             }, withCancel: nil)
             
             
@@ -74,25 +76,25 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
     }
     
     func sendMessage(){
-        let ref = FIRDatabase.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        let toId = self.toUser?.id
-        let fromId = self.user?.id
-        let timestamp = String(Int(NSDate().timeIntervalSince1970))
-        let message = self.textField.text!
-        let values: [String: AnyObject] = ["toId": toId as AnyObject, "fromId": fromId as AnyObject, "timestamp": timestamp as AnyObject, "message": message as AnyObject]
-        
-        childRef.updateChildValues(values) { (error, ref) in
-            if error != nil{
-                print(error!)
-                return
+        if self.textField.text != ""{
+            let ref = FIRDatabase.database().reference().child("messages")
+            let childRef = ref.childByAutoId()
+            let toId = self.toUser?.id
+            let fromId = self.user?.id
+            let timestamp = String(Int(NSDate().timeIntervalSince1970))
+            let message = self.textField.text!
+            let values: [String: AnyObject] = ["receiver": toId as AnyObject, "sender": fromId as AnyObject, "timestamp": timestamp as AnyObject, "text": message as AnyObject]
+            
+            childRef.updateChildValues(values) { (error, ref) in
+                if error != nil{
+                    print(error!)
+                    return
+                }
+                self.textField.text = nil
+                let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId!)
+                let messageId = childRef.key
+                userMessagesRef.updateChildValues([messageId: 1])
             }
-            
-            self.textField.text = nil
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId!)
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
-            
         }
     }
     
@@ -130,15 +132,45 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath) as! ChatMessageCell
         let message = messages[indexPath.row]
+        cell.textView.text = message.text
+        
         if message.sender == self.user?.id{
-            
+            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+            cell.textView.textColor = UIColor.white
+            cell.bubbleViewRightAnchor?.isActive = true
+            cell.bubbleViewLeftAnchor?.isActive = false
         } else{
-            
+            cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+            cell.textView.textColor = UIColor.black
+            cell.bubbleViewRightAnchor?.isActive = false
+            cell.bubbleViewLeftAnchor?.isActive = true
         }
-        cell.backgroundColor = UIColor.blue
+        
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 32
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        let message = messages[indexPath.item]
+        
+        
+        if let text = message.text{
+            height = estimateFrameForText(text: text).height + 20
+        }
+        
+        let width = UIScreen.main.bounds.width
+        return CGSize(width: width, height: height)
+    }
+    
+    private func estimateFrameForText(text: String) -> CGRect{
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+        
     }
     
     lazy var inputContainerView: UIView = {

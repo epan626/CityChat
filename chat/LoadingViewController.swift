@@ -23,15 +23,17 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     var cityCoordinates: CLLocationCoordinate2D?
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var continueButton: UIButton!
-    var user: User?
+    var user = [User]()
+    var test: String?
     
     //MARK: Views
     override func viewDidLoad() {
 
         super.viewDidLoad()
 
+
         let when = DispatchTime.now() + 1.0
-        DispatchQueue.main.asyncAfter(deadline: when) { 
+        DispatchQueue.main.asyncAfter(deadline: when) {
             self.loadingMapView.showsUserLocation = true
             self.currentLocation = self.locationManager.location
         }
@@ -57,6 +59,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
     }
     override func viewDidAppear(_ animated: Bool) {
+
         let when = DispatchTime.now() + 1.0
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
@@ -64,6 +67,15 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                     let when = DispatchTime.now() + 0.1
                     DispatchQueue.main.asyncAfter(deadline: when) {
                         if FIRAuth.auth()?.currentUser?.uid != nil {
+                            let loggedUserId = FIRAuth.auth()?.currentUser?.uid
+                            FIRDatabase.database().reference().child("users").child(loggedUserId!).observe(.value, with: { (snapshot) in
+                                guard let loggedInUserInfo = snapshot.value as? [String: AnyObject] else{
+                                    return
+                                }
+                                let user = User()
+                                user.setValuesForKeys(loggedInUserInfo)
+                                self.user.append(user)
+                            }, withCancel: nil)
                             self.loadingLabel.isHidden = true
                             self.continueButton.addTarget(self, action: #selector(self.performChatDisplaySegue), for: .touchUpInside)
                             if let cityName = self.city?["city"]{
@@ -111,7 +123,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 guard let dictionary = snapshot.value as? [String: AnyObject] else{
                     return
                 }
-                self.user?.setValuesForKeys(dictionary)
                 self.performSegue(withIdentifier: "cityChatSegue", sender: snapshot)
             }, withCancel: nil)
             
@@ -127,7 +138,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     func zoomInOnUserLocation(completion: @escaping () -> ()){
         let cityCenterLocation = CLLocation(latitude: self.city?["lat"] as! CLLocationDegrees, longitude: self.city?["lng"] as! CLLocationDegrees)
-        let span = MKCoordinateSpanMake(0.11, 0.11)
+        let span = MKCoordinateSpanMake(0.16, 0.16)
         let region = MKCoordinateRegionMake(cityCenterLocation.coordinate, span)
         loadingMapView.setRegion(region, animated: true)
         completion()
@@ -181,13 +192,16 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         if segue.identifier == "cityChatSegue" {
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
+                let loggedUser = self.user[0]
                 if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
-                    print("I'M SETTING THE CHATROOM CONTROLLER CITY")
-                    chatroomController.user = self.user
+                    chatroomController.user = loggedUser
                     chatroomController.city = self.city
                 }
-                if let userlistViewController = tabVC.viewControllers?[0] as? UserListViewController{
-                    userlistViewController.user = self.user
+                if let navController = tabVC.viewControllers?[0] as? UINavigationController{
+                    if let userListController = navController.topViewController as? UserListViewController{
+                        print("I'M SETTING THE DIRECT MESSAGE CONTROLLER USER")
+                        userListController.user = loggedUser
+                    }
                 }
             }
         } else{

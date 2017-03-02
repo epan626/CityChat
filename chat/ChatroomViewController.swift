@@ -41,6 +41,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         setupKeyboardObservers()
 
         print("WE ARE IN THE ALL CHAT CONTROLLER")
+        chatCollectionView?.register(AllChatMessageCell.self, forCellWithReuseIdentifier: "allChatCell")
         
     }
 
@@ -91,6 +92,8 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             }
         },  withCancel: nil)
     }
+    
+    
     override var canBecomeFirstResponder: Bool{
         return true
     }
@@ -121,7 +124,10 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     
     func handleLogoutAndSegue(completion: @escaping () -> ()){
-        let current = FIRAuth.auth()!.currentUser!.uid
+        guard let current = FIRAuth.auth()?.currentUser?.uid else{
+            completion()
+            return
+        }
         let ref = FIRDatabase.database().reference()
         ref.child("users").child(current).updateChildValues(["loggedOn": "false"])
         do{
@@ -139,7 +145,10 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         let childRef = ref.childByAutoId()
         let sender = FIRAuth.auth()!.currentUser!.uid
         let timestamp = String(Int(NSDate().timeIntervalSince1970))
-        let values = ["text": msgTextField.text!, "sender": sender, "timestamp": timestamp] as [String : Any]
+        guard let username = self.user?.username else{
+            return
+        }
+        let values = ["text": msgTextField.text!, "sender": sender, "timestamp": timestamp, "username": username] as [String : Any]
         childRef.updateChildValues(values)
         
     }
@@ -192,35 +201,79 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath) as! chatCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "allChatCell", for: indexPath) as! AllChatMessageCell
         let message = messages[indexPath.row]
         
-        if let user = message.sender {
-            let ref = FIRDatabase.database().reference().child("users").child(user)
-            ref.observe(.value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    if let integer = Int((message.timestamp)!) {
-                        let timeInterval = NSNumber(value: integer)
-                        let seconds = timeInterval.doubleValue
-                        let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "hh:mm:ss a"
-                        let date = dateFormatter.string(from: timeStampDate as Date)
-                            if message.sender == FIRAuth.auth()?.currentUser?.uid {
-                                cell.usernameOutlet.text  = date
-                                cell.messageOutlet.textAlignment = .right
-                                cell.usernameOutlet.textAlignment = .right
-                            } else {
-                                cell.messageOutlet.textAlignment = .left
-                                cell.usernameOutlet.textAlignment = .left
-                                cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
-                            }
-                    }
-                }
-            }, withCancel: nil)
+//        if let user = message.sender {
+//            let ref = FIRDatabase.database().reference().child("users").child(user)
+//            ref.observe(.value, with: { (snapshot) in
+//                if let dictionary = snapshot.value as? [String: AnyObject] {
+//                    if let integer = Int((message.timestamp)!) {
+//                        let timeInterval = NSNumber(value: integer)
+//                        let seconds = timeInterval.doubleValue
+//                        let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+//                        let dateFormatter = DateFormatter()
+//                        dateFormatter.dateFormat = "hh:mm:ss a"
+//                        let date = dateFormatter.string(from: timeStampDate as Date)
+//                            if message.sender == FIRAuth.auth()?.currentUser?.uid {
+//                                cell.detailTextLabel.text = date
+//                                cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+//                                cell.textView.textColor = UIColor.white
+//                                cell.detailTextLabel.textColor = UIColor.white
+//                                cell.bubbleViewRightAnchor?.isActive = true
+//                                cell.bubbleViewLeftAnchor?.isActive = false
+//                                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 42
+//
+//                            } else{
+//                                cell.detailTextLabel.text = (dictionary["username"] as? String)! + " - " + date
+//                                cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+//                                cell.textView.textColor = UIColor.black
+//                                cell.detailTextLabel.textColor = UIColor.black
+//                                cell.bubbleViewRightAnchor?.isActive = false
+//                                cell.bubbleViewLeftAnchor?.isActive = true
+//                                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 60
+//                            }
+//                    }
+//                }
+//            }, withCancel: nil)
+//        }
+        let sender = message.sender
+        if let integer = Int((message.timestamp)!) {
+            let timeInterval = NSNumber(value: integer)
+            let seconds = timeInterval.doubleValue
+            let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm:ss a"
+            let date = dateFormatter.string(from: timeStampDate as Date)
+            if sender == self.user?.id {
+                cell.detailTextLabel.text = date
+                cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+                cell.textView.textColor = UIColor.white
+                cell.detailTextLabel.textColor = UIColor.white
+                cell.bubbleViewRightAnchor?.isActive = true
+                cell.bubbleViewLeftAnchor?.isActive = false
+                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 42
+                
+            } else{
+                cell.detailTextLabel.text = message.username! + " - " + date
+                cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+                cell.textView.textColor = UIColor.black
+                cell.detailTextLabel.textColor = UIColor.black
+                cell.bubbleViewRightAnchor?.isActive = false
+                cell.bubbleViewLeftAnchor?.isActive = true
+                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 80
+            }
         }
-        cell.messageOutlet.text = message.text
+        
+        cell.textView.text = message.text
         return cell
+    }
+    
+    private func estimateFrameForText(text: String) -> CGRect{
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
