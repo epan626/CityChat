@@ -88,11 +88,12 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
                 print(error!)
                 return
             }
-            
-            self.textField.text = nil
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId!)
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
+        print(self.toUser)
+        print(self.user)
+//            self.textField.text = nil
+//            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId!)
+//            let messageId = childRef.key
+//            userMessagesRef.updateChildValues([messageId: 1])
             
         }
     }
@@ -131,15 +132,43 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath) as! ChatMessageCell
         let message = messages[indexPath.row]
+        cell.textView.text = message.text
+        
         if message.sender == self.user?.id{
-            
+            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+            cell.textView.textColor = UIColor.white
+            cell.bubbleViewRightAnchor?.isActive = true
+            cell.bubbleViewLeftAnchor?.isActive = false
         } else{
-            
+            cell.bubbleView.backgroundColor = UIColor(red: 240, green: 240, blue: 240, alpha: 1)
+            cell.textView.textColor = UIColor.black
+            cell.bubbleViewRightAnchor?.isActive = false
+            cell.bubbleViewLeftAnchor?.isActive = true
         }
-        cell.backgroundColor = UIColor.blue
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        let message = messages[indexPath.item]
+        
+        
+        if let text = message.text{
+            height = estimateFrameForText(text: text).height + 20
+        }
+        
+        let width = UIScreen.main.bounds.width
+        return CGSize(width: width, height: height)
+    }
+    
+    private func estimateFrameForText(text: String) -> CGRect{
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+        
     }
     
     lazy var inputContainerView: UIView = {

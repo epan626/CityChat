@@ -24,6 +24,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var continueButton: UIButton!
     var user: User?
+    var test: String?
     
     //MARK: Views
     override func viewDidLoad() {
@@ -65,6 +66,14 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                     let when = DispatchTime.now() + 0.1
                     DispatchQueue.main.asyncAfter(deadline: when) {
                         if FIRAuth.auth()?.currentUser?.uid != nil {
+                            let loggedUserId = FIRAuth.auth()?.currentUser?.uid
+                            FIRDatabase.database().reference().child("users").child(loggedUserId!).observe(.value, with: { (snapshot) in
+                                guard let loggedInUserInfo = snapshot.value as? [String: AnyObject] else{
+                                    return
+                                }
+                                print(loggedInUserInfo)
+
+                            }, withCancel: nil)
                             self.loadingLabel.isHidden = true
                             self.continueButton.addTarget(self, action: #selector(self.performChatDisplaySegue), for: .touchUpInside)
                             if let cityName = self.city?["city"]{
@@ -183,12 +192,15 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
                 if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
-                    print("I'M SETTING THE CHATROOM CONTROLLER CITY")
                     chatroomController.user = self.user
                     chatroomController.city = self.city
                 }
-                if let userlistViewController = tabVC.viewControllers?[0] as? UserListViewController{
-                    userlistViewController.user = self.user
+                if let navController = tabVC.viewControllers?[0] as? UINavigationController{
+                    if let userListController = navController.topViewController as? UserListViewController{
+                        print("I'M SETTING THE DIRECT MESSAGE CONTROLLER USER")
+                        print(self.user)
+                        userListController.user = self.user
+                    }
                 }
             }
         } else{

@@ -26,6 +26,10 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
         self.fetchAllUsers()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print(self.user)
+    }
+    
     //MARK: Fetch
     func fetchAllUsers() {
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
