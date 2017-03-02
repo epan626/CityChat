@@ -16,12 +16,18 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var containerViewBottomAnchor: NSLayoutConstraint?
     var users = [User]()
     var messages = [Message]()
+    var city: Dictionary<String, Any>?
+    var messageDictionary = [String: Message]()
+    var loginTime = Date()
+    var cityChat: String?
+    var user: User?
+    var flag = true
+    
     //Outlets
     @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
     @IBOutlet weak var sideMenuView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var msgTextField: UITextField!
-    @IBOutlet weak var nameOutlet: UILabel!
     
     
     //MARK: View
@@ -29,24 +35,61 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         msgTextField.delegate = self
         super.viewDidLoad()
         setupKeyboardObservers()
-        fetchAllUsers()
-        observeMessages()
+
+        print("WE ARE IN THE ALL CHAT CONTROLLER")
+        
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        if let userCity = self.city?["city"] as? String{
+            if userCity == "Burbank"{
+                self.cityChat = "burbankMessages"
+            } else if userCity == "Santa Monica"{
+                self.cityChat = "santaMonicaMessages"
+            } else if userCity == "San Francisco"{
+                self.cityChat = "sanFranciscoMessages"
+            } else if userCity == "San Diego"{
+                self.cityChat = "sanDiegoMessages"
+            } else{
+                self.cityChat = "noCityNearby"
+            }
+        }
+        if flag == true{
+            fetchAllUsers()
+            observeMessages()
+            self.flag = false
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: Helper
     func observeMessages(){
-        let ref = FIRDatabase.database().reference().child("burbankMessages")
+        let ref = FIRDatabase.database().reference().child(self.cityChat!)
         ref.observe(.childAdded, with: { (snapshot) in
-            
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
                 message.setValuesForKeys(dictionary)
-                self.messages.append(message)
+                if let integer = Int((message.timestamp)!) {
+                    let timeInterval = NSNumber(value: integer)
+                    let seconds = timeInterval.doubleValue
+                    let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+                    if self.loginTime < timeStampDate as Date {
+                         self.messages.append(message)
+                    }
+                }
+                self.messages.sort(by: { (message1, message2) -> Bool in
+                    return Int(message1.timestamp!)! < Int(message2.timestamp!)!
+                })
                 self.chatCollectionView.reloadData()
             }
         },  withCancel: nil)
     }
-    
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
     
     
     //MARK: Fetch
@@ -66,17 +109,29 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     //MARK: Actions
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        do {
-            try FIRAuth.auth()?.signOut()
-            print("logout pressed")
+        handleLogoutAndSegue(completion: {
+
             self.performSegue(withIdentifier: "unwindToMain", sender: self)
-        } catch let logoutError {
-            print(logoutError)
+        })
+    }
+    
+    
+    func handleLogoutAndSegue(completion: @escaping () -> ()){
+        let current = FIRAuth.auth()!.currentUser!.uid
+        let ref = FIRDatabase.database().reference()
+        ref.child("users").child(current).updateChildValues(["loggedOn": "false"])
+        do{
+            try FIRAuth.auth()?.signOut()
+        } catch {
+            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
+        completion()
     }
 
     @IBAction func sendButtonPressed(_ sender: UIButton) {
-        let ref = FIRDatabase.database().reference().child("burbankMessages")
+        let ref = FIRDatabase.database().reference().child(cityChat!)
         let childRef = ref.childByAutoId()
         let sender = FIRAuth.auth()!.currentUser!.uid
         let timestamp = String(Int(NSDate().timeIntervalSince1970))
@@ -94,12 +149,6 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             self.sideMenuViewLeadingContraint.constant = 375
         }
     }
-   
-    //MARK: Helper
-    
-    override var canBecomeFirstResponder: Bool{
-        return true
-    }
     
     //MARK: CollectionView
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -112,10 +161,38 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatCell", for: indexPath) as! chatCell
-        cell.backgroundColor = UIColor.purple
         let message = messages[indexPath.row]
-        cell.usernameOutlet.text = message.sender
+        
+        if let user = message.sender {
+            let ref = FIRDatabase.database().reference().child("users").child(user)
+            ref.observe(.value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    if let integer = Int((message.timestamp)!) {
+                        let timeInterval = NSNumber(value: integer)
+                        let seconds = timeInterval.doubleValue
+                        let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "hh:mm:ss a"
+                        let date = dateFormatter.string(from: timeStampDate as Date)
+                            if message.sender == FIRAuth.auth()?.currentUser?.uid {
+                                cell.usernameOutlet.text  = date
+                                cell.messageOutlet.textAlignment = .right
+                                cell.usernameOutlet.textAlignment = .right
+                            } else {
+                                cell.messageOutlet.textAlignment = .left
+                                cell.usernameOutlet.textAlignment = .left
+                                cell.usernameOutlet.text = (dictionary["username"] as? String)! + " - " + date
+                            }
+                    }
+                }
+            }, withCancel: nil)
+        }
+        cell.messageOutlet.text = message.text
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
     }
     
     
@@ -137,8 +214,9 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
     
     func handleKeyboardWillHide(notification: NSNotification){
-        containerViewBottomAnchor?.constant = -50
+        containerViewBottomAnchor?.constant = -5
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+        
         UIView.animate(withDuration: keyboardDuration!, animations: {
             self.view.layoutIfNeeded()
         })

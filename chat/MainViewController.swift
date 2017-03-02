@@ -18,7 +18,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var segmentedControllerOutlet: UISegmentedControl!
     @IBOutlet weak var goButtonLabel: UIButton!
     @IBOutlet var inputFieldCollections: [UITextField]!
-    
+    var city: Dictionary<String, Any>?
+    var errorText: String?
     
     //MARK: Views
     override func viewDidLoad() {
@@ -33,6 +34,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print(self.city)
+    }
 
     //MARK: Actions
     
@@ -48,10 +52,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error != nil {
                     print(error!)
-                    let alert = UIAlertController(title: "Invalid", message: "Both email and password are required!", preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController(title: "Invalid", message: "Email or password is incorrect!", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 } else {
+                    let ref = FIRDatabase.database().reference()
+                    let current = FIRAuth.auth()!.currentUser!.uid
+                    let rightnow = String(Int(NSDate().timeIntervalSince1970))
+                    ref.child("users").child(current).updateChildValues(["loggedOn": "true", "lastLogged": rightnow])
                     self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 }
             })
@@ -65,8 +73,22 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error) in
                 if error != nil {
                     print(error!)
-                    let alert = UIAlertController(title: "Invalid", message: "All fields are required!", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.default, handler: nil))
+                    
+                    if let errCode = FIRAuthErrorCode(rawValue: error!._code){
+                        switch errCode {
+                        case .errorCodeInvalidEmail:
+                            self.errorText = "Please enter a valid email."
+                        case .errorCodeEmailAlreadyInUse:
+                            self.errorText = "Email is already in use."
+                        case .errorCodeWeakPassword:
+                            self.errorText = "Password must be at least 6 characters."
+                        default:
+                            self.errorText = "All fields are required for registrations."
+                        }
+                    }
+                    
+                    let alert = UIAlertController(title: "Invalid", message: self.errorText, preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                     return
                 }
@@ -75,12 +97,17 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 }
                 let ref = FIRDatabase.database().reference()
                 let usersReference = ref.child("users").child(uid)
-                let values = ["username": name, "email": email]
+                                
+                let rightnow = String(Int(NSDate().timeIntervalSince1970))
+                let values = ["username": name, "email": email, "loggedOn": "true", "lastLogged": rightnow, "id": uid] as [String : Any]
                 usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                     if err != nil {
                         print(err!)
                         return
+                    } else {
+                        print(ref)
                     }
+                    self.performSegue(withIdentifier: "cityChatSegue", sender: user!)
                 })
             })
         }
@@ -116,9 +143,12 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if segue.identifier == "cityChatSegue" {
             if let tabVC = segue.destination as? UITabBarController {
                 tabVC.selectedIndex = 1
+                if let chatroomController = tabVC.viewControllers?[1] as? allChatController{
+                    print("I'M SETTING THE CHATROOM CONTROLLER CITY")
+                    chatroomController.city = self.city
+                }
             }
         }
-
     }
     
     //MARK: Unwind Segue
