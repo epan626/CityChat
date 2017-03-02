@@ -31,8 +31,8 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         super.viewDidLoad()
 
 
-        let when = DispatchTime.now() + 3.0
-        DispatchQueue.main.asyncAfter(deadline: when) { 
+        let when = DispatchTime.now() + 1.0
+        DispatchQueue.main.asyncAfter(deadline: when) {
             self.loadingMapView.showsUserLocation = true
             self.currentLocation = self.locationManager.location
         }
@@ -58,7 +58,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        let when = DispatchTime.now() + 3.5
+        let when = DispatchTime.now() + 4.0
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
                 self.zoomInOnUserLocation(completion: {
@@ -128,7 +128,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     func zoomInOnUserLocation(completion: @escaping () -> ()){
         let cityCenterLocation = CLLocation(latitude: self.city?["lat"] as! CLLocationDegrees, longitude: self.city?["lng"] as! CLLocationDegrees)
-        let span = MKCoordinateSpanMake(0.11, 0.11)
+        let span = MKCoordinateSpanMake(0.16, 0.16)
         let region = MKCoordinateRegionMake(cityCenterLocation.coordinate, span)
         loadingMapView.setRegion(region, animated: true)
         completion()
