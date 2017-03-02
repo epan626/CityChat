@@ -29,13 +29,9 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     override func viewDidLoad() {
 
         super.viewDidLoad()
-<<<<<<< HEAD
-        FIRDatabase.database().reference().child("city-locations").observe(.childAdded, with: { (snapshot) in
-            print(snapshot)
-        }, withCancel: nil)
-=======
 
-        let when = DispatchTime.now() + 20.0
+
+        let when = DispatchTime.now() + 3.0
         DispatchQueue.main.asyncAfter(deadline: when) { 
             self.loadingMapView.showsUserLocation = true
             self.currentLocation = self.locationManager.location
@@ -47,7 +43,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 //            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
 //            self.present(alert, animated: true, completion: nil)
 //        }
->>>>>>> f73a0a45bf958c9629b5dd5889810b4d1b596de4
         
     
 
@@ -63,7 +58,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        let when = DispatchTime.now() + 30.0
+        let when = DispatchTime.now() + 3.5
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
                 self.zoomInOnUserLocation(completion: {
