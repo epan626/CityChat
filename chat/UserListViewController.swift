@@ -15,6 +15,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     var users = [User]()
     var user: User?
     var loginTime = String(Int(NSDate().timeIntervalSince1970))
+    var loggedOnUsers = [User]()
     
     //MARK: Outlet
     @IBOutlet weak var userListTableView: UITableView!
@@ -30,12 +31,15 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     func fetchAllUsers() {
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                print(snapshot)
                 let user = User()
                 user.id = snapshot.key
                 user.setValuesForKeys(dictionary)
                 self.users.append(user)
-                self.userListTableView.reloadData()
+//                self.userListTableView.reloadData()
+                if user.loggedOn == "true" {
+                    self.loggedOnUsers.append(user)
+                    self.userListTableView.reloadData()
+                }
             }
         }, withCancel: nil)
     }
@@ -46,34 +50,18 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        print(users.count)
+        return loggedOnUsers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = userListTableView.dequeueReusableCell(withIdentifier: "userCell") as! userCell
-        let user = users[indexPath.row]
-//        let ref = FIRDatabase.database().reference().child("users").child(user.username!)
-//        ref.observe(.value, with: { (snapshot) in
-//            if let dictionary = snapshot.value as? [String: AnyObject] {
-//                print(snapshot.value)
-//
-//            }
-//        }, withCancel: nil)
-        if let integer = Int(loginTime) {
-            let timeInterval = NSNumber(value: integer)
-            let seconds = timeInterval.doubleValue
-            let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh:mm:ss a"
-            let date = dateFormatter.string(from: timeStampDate as Date)
-            cell.onlineTimeOutlet.text = date
-        }
+        let user = loggedOnUsers[indexPath.row]
         cell.usernameOutlet.text = user.username
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.user)
         let toUser = users[indexPath.row]
         let directMessageController = self.storyboard?.instantiateViewController(withIdentifier: "DirectMessageController") as? DirectMessageViewController
         directMessageController?.user = self.user

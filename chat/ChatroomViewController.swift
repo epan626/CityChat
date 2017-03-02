@@ -23,13 +23,18 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var user: User?
     var flag = true
     var inputContainerViewBottomAnchor: NSLayoutConstraint?
+
     
     //Outlets
-    @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
+//    @IBOutlet weak var sideMenuViewLeadingContraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var parentSideMenuView: UIView!
     @IBOutlet weak var sideMenuView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var msgTextField: UITextField!
     @IBOutlet weak var inputContainerView: UIView!
+    @IBOutlet weak var containerViewOutlet: UIView!
+    @IBOutlet weak var sideMenuViewTrailingConstraint: NSLayoutConstraint!
     
     //MARK: View
     override func viewDidLoad() {
@@ -148,20 +153,50 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         }
         let values = ["text": msgTextField.text!, "sender": sender, "timestamp": timestamp, "username": username] as [String : Any]
         childRef.updateChildValues(values)
-        let indexPath = IndexPath(row: messages.count - 1, section: 0)
-        chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        if messages.count > 0{
+            let indexPath = IndexPath(row: messages.count - 1, section: 0)
+            chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
     }
     
     @IBAction func swipeFromRightEdge(_ sender: UIScreenEdgePanGestureRecognizer) {
-        UIView.animate(withDuration: 2.0, animations: {
-            self.sideMenuViewLeadingContraint.constant = 250
+        UIView.animate(withDuration: 0.2, animations: {
+            self.containerViewOutlet.sendSubview(toBack: self.chatCollectionView)
+//             print("swipe")
+            self.containerViewOutlet.bringSubview(toFront: self.parentSideMenuView)
+//            self.sideMenuView.widthAnchor.constraint(equalToConstant: 90)
+            print("swipe")
+            self.sideMenuViewTrailingConstraint.constant = -20
+            self.parentSideMenuView.alpha = 1.0
+             self.chatCollectionView.alpha = 0.3
+            self.chatCollectionView.backgroundColor = UIColor.init(red: 144/255, green: 238/255, blue: 144/255, alpha: 0.3)
+            self.parentSideMenuView.backgroundColor = UIColor.init(red: 144/255, green: 238/255, blue: 144/255, alpha: 0.0)
+            self.sideMenuView.alpha = 1.0
+            self.sideMenuView.backgroundColor = UIColor.init(red: 46/255, green: 139/255, blue: 87/255, alpha: 1.0)
+            self.parentSideMenuView.widthAnchor.constraint(equalToConstant: 0)
+//            self.parentSideMenuView.backgroundColor?.withAlphaComponent(0.5)
+//            self.sideMenuViewLeadingContraint.constant = 285
         })
     }
     @IBAction func swipeLeftGesture(_ sender: UISwipeGestureRecognizer) {
         if sender.direction == .right {
-            self.sideMenuViewLeadingContraint.constant = 375
+            self.containerViewOutlet.sendSubview(toBack: self.parentSideMenuView)
+            self.containerViewOutlet.bringSubview(toFront: self.chatCollectionView)
+             self.sideMenuViewTrailingConstraint.constant = -122
+            self.parentSideMenuView.alpha = 0
+            self.chatCollectionView.alpha = 1
+             self.parentSideMenuView.widthAnchor.constraint(equalToConstant: 375)
+            self.chatCollectionView.backgroundColor = UIColor.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
+//            self.parentSideMenuView.backgroundColor = UIColor.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.3)
         }
     }
+    
+    
+   
+    
+    
+    
+    
     
     //MARK: CollectionView
     func numberOfSections(in collectionView: UICollectionView) -> Int {

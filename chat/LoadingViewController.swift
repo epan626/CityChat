@@ -59,7 +59,8 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        let when = DispatchTime.now() + 4.0
+
+        let when = DispatchTime.now() + 1.0
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.findChatroom(completion: {
                 self.zoomInOnUserLocation(completion: {

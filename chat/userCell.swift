@@ -10,5 +10,5 @@ import UIKit
 
 class userCell: UITableViewCell {
     @IBOutlet weak var usernameOutlet: UILabel!
-    @IBOutlet weak var onlineTimeOutlet: UILabel!
+//    @IBOutlet weak var onlineTimeOutlet: UILabel!
 }
