@@ -132,6 +132,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         ref.child("users").child(current).updateChildValues(["loggedOn": "false"])
         do{
             try FIRAuth.auth()?.signOut()
+            print(FIRAuth.auth()?.currentUser?.uid)
         } catch {
             let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))

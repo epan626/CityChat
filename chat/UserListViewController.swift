@@ -103,6 +103,9 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
         else if tableView == self.offlineDmUserListTable {
             cell2 = offlineDmUserListTable.dequeueReusableCell(withIdentifier: "offlineUserCell") as? offlineUserCell
             let user = offlineDmUsers[indexPath.row]
+//            if user.loggedOn == "true" {
+//                cell2?.directMsgStatus.image = UIImage(named: "Online")
+//            }
             cell2?.offlineUsername.text = user.username
             check = false
         }

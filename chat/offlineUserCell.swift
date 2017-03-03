@@ -9,5 +9,6 @@ import UIKit
 
 class offlineUserCell: UITableViewCell {
     
+    @IBOutlet weak var directMsgStatus: UIImageView!
     @IBOutlet weak var offlineUsername: UILabel!
 }
