@@ -34,6 +34,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     //MARK: Fetch
     func fetchAllUsers() {
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
+            let removeID = snapshot.key
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
                 user.id = snapshot.key
@@ -45,6 +46,11 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                         self.userListTableView.reloadData()
                     }
                 }
+//                else if user.loggedOn == "false" && self.loggedOnUsers.contains(where: {$0.id == removeID}) {
+//                    if let removeIDIndex = self.loggedOnUsers.index(of: user) {
+//                        self.loggedOnUsers.remove(at: removeIDIndex)
+//                    }
+//                }
             }
         }, withCancel: nil)
         

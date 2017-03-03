@@ -118,8 +118,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 guard let dictionary = snapshot.value as? [String: AnyObject] else{
                     return
                 }
-                
-                
                 self.performSegue(withIdentifier: "cityChatSegue", sender: snapshot)
             }, withCancel: nil)
             

@@ -125,7 +125,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                         print(dictionary)
                         let user = User()
                         user.setValuesForKeys(dictionary)
-                        print(user.username)
                         self.user.append(user)
                         self.performSegue(withIdentifier: "cityChatSegue", sender: user)
                     }, withCancel: nil)
@@ -138,6 +137,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     @IBAction func signRegisterButtonPressed(_ sender: Any) {
         if segmentedControllerOutlet.selectedSegmentIndex == 0 {
             goButtonLabel.setTitle("Sign in", for: .normal)
+            nameOutlet.keyboardType = UIKeyboardType.emailAddress
+            emailOutlet.keyboardType = UIKeyboardType.default
             nameOutlet.placeholder = "Email"
             emailOutlet.placeholder = "Password" // on purpose
             emailOutlet.isSecureTextEntry = true
@@ -148,6 +149,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             }
         } else {
              goButtonLabel.setTitle("Register", for: .normal)
+            emailOutlet.keyboardType = UIKeyboardType.emailAddress
+            nameOutlet.keyboardType = UIKeyboardType.default
             for x in 0...inputFieldCollections.count-1 {
                 inputFieldCollections[x].text = ""
             }
