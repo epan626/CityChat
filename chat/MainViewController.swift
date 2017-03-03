@@ -32,11 +32,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         nameOutlet.delegate = self
         emailOutlet.delegate = self
         passwordOutlet.delegate = self
+        self.view.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print(self.city)
     }
 
     //MARK: Actions
