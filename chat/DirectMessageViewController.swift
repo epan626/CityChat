@@ -93,8 +93,10 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
                 }
                 self.textField.text = nil
                 let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId!)
+                let toOtherUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId!).child(fromId!)
                 let messageId = childRef.key
                 userMessagesRef.updateChildValues([messageId: 1])
+                toOtherUserMessagesRef.updateChildValues([messageId: 1])
             }
         }
     }
