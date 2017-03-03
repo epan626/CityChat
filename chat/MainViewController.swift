@@ -34,10 +34,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         passwordOutlet.delegate = self
         super.viewDidLoad()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print(self.city)
-    }
 
     //MARK: Actions
     
@@ -59,7 +55,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     let ref = FIRDatabase.database().reference()
                     let current = FIRAuth.auth()!.currentUser!.uid
-                    FIRDatabase.database().reference().child("users").child(current).observe(.value, with: { (snapshot) in
+                    FIRDatabase.database().reference().child("users").child(current).observeSingleEvent(of: .value, with: { (snapshot) in
                         guard let loggedInUserInfo = snapshot.value as? [String: AnyObject] else{
                             return
                         }
@@ -182,10 +178,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
-    
-    //MARK: Unwind Segue
-
-    @IBAction func unwindToMain(segue: UIStoryboardSegue){}
     
     //MARK: Dismiss
     func dismissKeyboard(){

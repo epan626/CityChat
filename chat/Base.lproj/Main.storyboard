@@ -319,12 +319,10 @@
                         <outlet property="sideMenu" destination="jLz-BM-d5d" id="D5o-09-N4L"/>
                         <outlet property="sideMenuView" destination="jLz-BM-d5d" id="eZh-XI-uDE"/>
                         <outlet property="sideMenuViewTrailingConstraint" destination="BTk-52-p7V" id="9tk-tH-xQO"/>
-                        <segue destination="PQ4-tP-Hrh" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="CjM-QO-Lo6"/>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="logoutUserSegue" id="bpj-bi-LrE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jxs-jR-8kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="PQ4-tP-Hrh" userLabel="Exit" sceneMemberID="exit"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="dv3-tk-2bS">
                     <rectEdge key="edges" right="YES"/>
                     <connections>
@@ -421,7 +419,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j6c-O4-5sm" id="Lzz-YP-EWx">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VuP-n6-k23">
