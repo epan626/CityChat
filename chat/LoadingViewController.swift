@@ -25,7 +25,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     @IBOutlet weak var continueButton: UIButton!
     var user = [User]()
     var test: String?
-    
+
     //MARK: Views
     override func viewDidLoad() {
 
@@ -37,25 +37,21 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             self.loadingMapView.showsUserLocation = true
             self.currentLocation = self.locationManager.location
         }
-//        do{
-//            try FIRAuth.auth()?.signOut()
-//        } catch {
-//            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
-//            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
-//            self.present(alert, animated: true, completion: nil)
-//        }
-        
-    
-
         locationManager.delegate = self
-//        loadingMapView.showsUserLocation = true
-//        currentLocation = locationManager.location
         continueButton.isHidden = true
         loadingMapView.delegate = self
        // progress bar animation
         UIView.animate(withDuration: 3.0, animations: { () -> Void in
             self.progressView.setProgress(0.0, animated: true)
         })
+        //logout
+        //        do{
+        //            try FIRAuth.auth()?.signOut()
+        //        } catch {
+        //            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+        //            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+        //            self.present(alert, animated: true, completion: nil)
+        //        }
 
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -81,7 +77,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                             if let cityName = self.city?["city"]{
                                 self.continueButton.setTitle("Continue to the \(cityName) chat", for: .normal)
                                 self.continueButton.isHidden = false
-                                
                             } else{
                                 self.continueButton.setTitle("Sorry, there are no chatrooms available near you", for: .normal)
                                 self.continueButton.isHidden = false
@@ -123,6 +118,8 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 guard let dictionary = snapshot.value as? [String: AnyObject] else{
                     return
                 }
+                
+                
                 self.performSegue(withIdentifier: "cityChatSegue", sender: snapshot)
             }, withCancel: nil)
             
@@ -137,7 +134,15 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     }
     
     func zoomInOnUserLocation(completion: @escaping () -> ()){
-        let cityCenterLocation = CLLocation(latitude: self.city?["lat"] as! CLLocationDegrees, longitude: self.city?["lng"] as! CLLocationDegrees)
+        guard let latitude = self.city?["lat"] as? CLLocationDegrees else{
+            completion()
+            return
+        }
+        guard let longitude = self.city?["lng"] as? CLLocationDegrees else{
+            completion()
+            return
+        }
+        let cityCenterLocation = CLLocation(latitude: latitude, longitude: longitude)
         let span = MKCoordinateSpanMake(0.16, 0.16)
         let region = MKCoordinateRegionMake(cityCenterLocation.coordinate, span)
         loadingMapView.setRegion(region, animated: true)
@@ -151,7 +156,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             guard let cities = snapshot.value as? NSArray else{
                 return
             }
-            
+
             guard let latitude = self.currentLocation?.coordinate.latitude, let longitude = self.currentLocation?.coordinate.longitude else{
                 print("THE LOCATION IS NOT SET")
                 return
@@ -176,6 +181,7 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             
             
         }, withCancel: nil)
+        completion()
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {

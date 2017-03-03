@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qko-bJ-MSz">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qko-bJ-MSz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -70,7 +70,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="City Chat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzq-2z-0x5">
-                                <rect key="frame" x="16" y="20" width="343" height="82"/>
+                                <rect key="frame" x="16" y="30" width="343" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="50"/>
                                 <nil key="textColor"/>
@@ -192,7 +192,7 @@
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="logoutButtonPressed:" destination="fRK-JL-t3x" eventType="touchUpInside" id="ahg-8S-z00"/>
+                                                            <action selector="logoutButtonPressed:" destination="fRK-JL-t3x" eventType="touchUpInside" id="gju-J7-TDQ"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsb-O3-0Jc">
@@ -208,6 +208,9 @@
                                                         <state key="normal" title="Profile">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="profileButtonPressed:" destination="fRK-JL-t3x" eventType="touchUpInside" id="sOp-c2-zcX"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jq0-fz-tsJ">
                                                         <rect key="frame" x="0.0" y="133" width="90" height="39"/>
@@ -312,9 +315,11 @@
                         <outlet property="inputContainerView" destination="jHt-KU-MQ0" id="0mK-Kp-BcZ"/>
                         <outlet property="msgTextField" destination="H4r-zD-F9T" id="Gbd-Kx-upa"/>
                         <outlet property="parentSideMenuView" destination="EWz-CJ-mjj" id="JVv-gV-1MV"/>
+                        <outlet property="sideMenu" destination="jLz-BM-d5d" id="D5o-09-N4L"/>
                         <outlet property="sideMenuView" destination="jLz-BM-d5d" id="eZh-XI-uDE"/>
                         <outlet property="sideMenuViewTrailingConstraint" destination="BTk-52-p7V" id="9tk-tH-xQO"/>
                         <segue destination="PQ4-tP-Hrh" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="CjM-QO-Lo6"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="logoutUserSegue" id="bpj-bi-LrE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jxs-jR-8kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -380,7 +385,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AOk-pU-rUl" id="SG7-UA-Q3k">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qng-q4-0mm">
@@ -543,5 +548,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="XXc-Sr-YPC"/>
+        <segue reference="bpj-bi-LrE"/>
     </inferredMetricsTieBreakers>
 </document>

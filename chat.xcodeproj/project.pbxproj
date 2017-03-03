@@ -28,6 +28,11 @@
 		8539B9401E64E030001D852D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539B93F1E64E030001D852D /* UserListViewController.swift */; };
 		8539B9421E64E193001D852D /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539B9411E64E193001D852D /* DirectMessageViewController.swift */; };
 		854EE9C91E67C522007045C3 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854EE9C81E67C522007045C3 /* ChatMessageCell.swift */; };
+		85EC8AED1E68DE8700DE292D /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC8AEC1E68DE8700DE292D /* TransitionDelegate.swift */; };
+		85EC8AEF1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC8AEE1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift */; };
+		85EC8AF11E68DEF100DE292D /* TransitionPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC8AF01E68DEF100DE292D /* TransitionPresentationAnimator.swift */; };
+		85EC8AF31E68DF1600DE292D /* TransitionDismissalAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC8AF21E68DF1600DE292D /* TransitionDismissalAnimator.swift */; };
+		85EC8AF51E68F30400DE292D /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC8AF41E68F30400DE292D /* UserProfileViewController.swift */; };
 		DE6E5D1C3592D1E6A58915DC /* Pods_chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C77A4A2862ECBD71B8E21D /* Pods_chat.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +84,11 @@
 		8539B93F1E64E030001D852D /* UserListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		8539B9411E64E193001D852D /* DirectMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
 		854EE9C81E67C522007045C3 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		85EC8AEC1E68DE8700DE292D /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
+		85EC8AEE1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDisplayTransitionAnimator.swift; sourceTree = "<group>"; };
+		85EC8AF01E68DEF100DE292D /* TransitionPresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionPresentationAnimator.swift; sourceTree = "<group>"; };
+		85EC8AF21E68DF1600DE292D /* TransitionDismissalAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDismissalAnimator.swift; sourceTree = "<group>"; };
+		85EC8AF41E68F30400DE292D /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		89BBD00AAD733445B09E37C1 /* Pods-chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chat.release.xcconfig"; path = "Pods/Target Support Files/Pods-chat/Pods-chat.release.xcconfig"; sourceTree = "<group>"; };
 		A5FB169E93B4539824C1E7A2 /* Pods-chatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-chatTests/Pods-chatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFA6AC37200C897E02F3DF4F /* Pods_chatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +153,7 @@
 				0725843A1E666287003D2B25 /* chatCell.swift */,
 				0768BCF61E6483C500356E34 /* Main.storyboard */,
 				8539B9411E64E193001D852D /* DirectMessageViewController.swift */,
+				85EC8AF41E68F30400DE292D /* UserProfileViewController.swift */,
 				854EE9C81E67C522007045C3 /* ChatMessageCell.swift */,
 				85235AB81E68970700C51D69 /* AllChatMessageCell.swift */,
 				8539B93F1E64E030001D852D /* UserListViewController.swift */,
@@ -151,6 +162,10 @@
 				072584381E665E70003D2B25 /* Message.swift */,
 				0768BCFC1E6483C500356E34 /* Assets.xcassets */,
 				074093351E64FF12009408A7 /* LoadingViewController.swift */,
+				85EC8AEC1E68DE8700DE292D /* TransitionDelegate.swift */,
+				85EC8AEE1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift */,
+				85EC8AF01E68DEF100DE292D /* TransitionPresentationAnimator.swift */,
+				85EC8AF21E68DF1600DE292D /* TransitionDismissalAnimator.swift */,
 				072584361E6655DC003D2B25 /* User.swift */,
 				0768BCFE1E6483C500356E34 /* LaunchScreen.storyboard */,
 				0768BD011E6483C500356E34 /* Info.plist */,
@@ -485,9 +500,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				074093361E64FF12009408A7 /* LoadingViewController.swift in Sources */,
+				85EC8AF31E68DF1600DE292D /* TransitionDismissalAnimator.swift in Sources */,
+				85EC8AF11E68DEF100DE292D /* TransitionPresentationAnimator.swift in Sources */,
 				8539B9401E64E030001D852D /* UserListViewController.swift in Sources */,
+				85EC8AEF1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift in Sources */,
 				0768BCF51E6483C500356E34 /* MainViewController.swift in Sources */,
 				0725843B1E666287003D2B25 /* chatCell.swift in Sources */,
+				85EC8AF51E68F30400DE292D /* UserProfileViewController.swift in Sources */,
 				072584391E665E70003D2B25 /* Message.swift in Sources */,
 				0768BCFB1E6483C500356E34 /* chat.xcdatamodeld in Sources */,
 				07EA15EB1E67804900E78F20 /* userCell.swift in Sources */,
@@ -495,6 +514,7 @@
 				85235AB91E68970700C51D69 /* AllChatMessageCell.swift in Sources */,
 				0768BCF31E6483C500356E34 /* AppDelegate.swift in Sources */,
 				854EE9C91E67C522007045C3 /* ChatMessageCell.swift in Sources */,
+				85EC8AED1E68DE8700DE292D /* TransitionDelegate.swift in Sources */,
 				8539B93E1E64D5DF001D852D /* ChatroomViewController.swift in Sources */,
 				8539B9421E64E193001D852D /* DirectMessageViewController.swift in Sources */,
 			);

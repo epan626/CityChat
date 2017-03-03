@@ -16,7 +16,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     var user: User?
     var loginTime = String(Int(NSDate().timeIntervalSince1970))
     var loggedOnUsers = [User]()
-    
+
     //MARK: Outlet
     @IBOutlet weak var userListTableView: UITableView!
     

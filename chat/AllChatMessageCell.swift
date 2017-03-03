@@ -68,7 +68,7 @@ class AllChatMessageCell: UICollectionViewCell{
         
         //textView constraints
         textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
-        textView.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor, constant: 4).isActive = true
+        textView.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor).isActive = true
         textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
         textView.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: 8).isActive = true
 //        textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
@@ -77,7 +77,7 @@ class AllChatMessageCell: UICollectionViewCell{
 //        detailTextLabel.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -8).isActive = true
         detailTextLabel.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         detailTextLabel.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 10).isActive = true
-        detailTextLabel.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -8).isActive = true
+        detailTextLabel.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -4).isActive = true
         
         
     }
