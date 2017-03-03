@@ -39,7 +39,6 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                 user.id = snapshot.key
                 user.setValuesForKeys(dictionary)
                 self.users.append(user)
-//                self.userListTableView.reloadData()
                 if user.loggedOn == "true" {
                     if user.id != FIRAuth.auth()?.currentUser?.uid {
                         self.loggedOnUsers.append(user)
@@ -61,6 +60,10 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                             user3.id = snapshot3.key
                             user3.setValuesForKeys(dictionary2)
                             print(user3.username!)
+                            
+                            if self.offlineDmUsers.contains(where: {$0.id == snapshot3.key}) {
+                                return
+                            }
                             self.offlineDmUsers.append(user3)
                             let when = DispatchTime.now() + 1.0
                             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -103,6 +106,9 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
         else if tableView == self.offlineDmUserListTable {
             cell2 = offlineDmUserListTable.dequeueReusableCell(withIdentifier: "offlineUserCell") as? offlineUserCell
             let user = offlineDmUsers[indexPath.row]
+            if user.loggedOn == "true" {
+                cell2?.directMsgStatus.image = UIImage(named: "Online")
+            }
             cell2?.offlineUsername.text = user.username
             check = false
         }

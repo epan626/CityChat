@@ -437,6 +437,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="directMsgStatus" destination="G49-A9-G5A" id="TYL-0l-BiC"/>
                                             <outlet property="offlineUsername" destination="VuP-n6-k23" id="doC-Zd-8Pu"/>
                                         </connections>
                                     </tableViewCell>
