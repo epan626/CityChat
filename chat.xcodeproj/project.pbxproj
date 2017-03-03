@@ -22,6 +22,7 @@
 		0768BD161E6483C500356E34 /* chatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768BD151E6483C500356E34 /* chatUITests.swift */; };
 		0768BD241E64C76D00356E34 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0768BD231E64C76D00356E34 /* GoogleService-Info.plist */; };
 		07EA15EB1E67804900E78F20 /* userCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EA15EA1E67804900E78F20 /* userCell.swift */; };
+		07FF60901E68DAFB007E9318 /* offlineUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF608F1E68DAFB007E9318 /* offlineUserCell.swift */; };
 		1988F3C1FC66E38F40AB819A /* Pods_chatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA6AC37200C897E02F3DF4F /* Pods_chatTests.framework */; };
 		85235AB91E68970700C51D69 /* AllChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85235AB81E68970700C51D69 /* AllChatMessageCell.swift */; };
 		8539B93E1E64D5DF001D852D /* ChatroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */; };
@@ -75,6 +76,7 @@
 		0768BD171E6483C500356E34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0768BD231E64C76D00356E34 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		07EA15EA1E67804900E78F20 /* userCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = userCell.swift; sourceTree = "<group>"; };
+		07FF608F1E68DAFB007E9318 /* offlineUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = offlineUserCell.swift; sourceTree = "<group>"; };
 		26A5BCBD44DD8B9EFE5F544C /* Pods_chatUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chatUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		302690DB798B63020C962567 /* Pods-chatUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-chatUITests/Pods-chatUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		500D8B2BB75F132F93713C27 /* Pods-chatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-chatTests/Pods-chatTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				854EE9C81E67C522007045C3 /* ChatMessageCell.swift */,
 				85235AB81E68970700C51D69 /* AllChatMessageCell.swift */,
 				8539B93F1E64E030001D852D /* UserListViewController.swift */,
+				07FF608F1E68DAFB007E9318 /* offlineUserCell.swift */,
 				8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */,
 				07EA15EA1E67804900E78F20 /* userCell.swift */,
 				072584381E665E70003D2B25 /* Message.swift */,
@@ -293,7 +296,7 @@
 				TargetAttributes = {
 					0768BCEE1E6483C500356E34 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 225XNVWBRP;
+						DevelopmentTeam = CC4A7GJE49;
 						ProvisioningStyle = Automatic;
 					};
 					0768BD051E6483C500356E34 = {
@@ -511,6 +514,7 @@
 				0768BCFB1E6483C500356E34 /* chat.xcdatamodeld in Sources */,
 				07EA15EB1E67804900E78F20 /* userCell.swift in Sources */,
 				072584371E6655DC003D2B25 /* User.swift in Sources */,
+				07FF60901E68DAFB007E9318 /* offlineUserCell.swift in Sources */,
 				85235AB91E68970700C51D69 /* AllChatMessageCell.swift in Sources */,
 				0768BCF31E6483C500356E34 /* AppDelegate.swift in Sources */,
 				854EE9C91E67C522007045C3 /* ChatMessageCell.swift in Sources */,
@@ -670,11 +674,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 225XNVWBRP;
+				DEVELOPMENT_TEAM = CC4A7GJE49;
 				INFOPLIST_FILE = chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = charlie.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = eric.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -686,11 +690,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 225XNVWBRP;
+				DEVELOPMENT_TEAM = CC4A7GJE49;
 				INFOPLIST_FILE = chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = charlie.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = eric.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
