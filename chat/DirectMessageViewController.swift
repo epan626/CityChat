@@ -140,12 +140,12 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
         cell.textView.text = message.text
         
         if message.sender == self.user?.id{
-            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+            cell.bubbleView.backgroundColor = UIColor.init(red: 46/255, green: 139/255, blue: 87/255, alpha: 1.0)
             cell.textView.textColor = UIColor.white
             cell.bubbleViewRightAnchor?.isActive = true
             cell.bubbleViewLeftAnchor?.isActive = false
         } else{
-            cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+            cell.bubbleView.backgroundColor = UIColor.init(red: 144/255, green: 238/255, blue: 144/255, alpha: 0.3)
             cell.textView.textColor = UIColor.black
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
@@ -179,7 +179,7 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
     lazy var inputContainerView: UIView = {
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
-        containerView.backgroundColor = UIColor.yellow
+        containerView.backgroundColor = UIColor.white
         
         self.textField.translatesAutoresizingMaskIntoConstraints = false
         self.textField.placeholder = "Enter message..."
@@ -189,9 +189,11 @@ class DirectMessageViewController: UICollectionViewController, UITextFieldDelega
         let sendButton = UIButton(type: .system)
         sendButton.setTitle("Send", for: .normal)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.layer.cornerRadius = 20
         containerView.addSubview(sendButton)
-        sendButton.backgroundColor = UIColor.red
-        
+        sendButton.setTitleColor(UIColor.white, for: .normal)
+        sendButton.backgroundColor = UIColor.init(red: 46/255, green: 139/255, blue: 87/255, alpha: 1.0)
+
         //button constraints
         sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
         sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true

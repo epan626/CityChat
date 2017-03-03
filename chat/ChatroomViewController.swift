@@ -23,7 +23,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     var user: User?
     var flag = true
     var inputContainerViewBottomAnchor: NSLayoutConstraint?
-
+    let viewTransitionDelegate = TransitionDelegate()
     
     //Outlets
     @IBOutlet weak var parentSideMenuView: UIView!
@@ -33,16 +33,17 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     @IBOutlet weak var inputContainerView: UIView!
     @IBOutlet weak var containerViewOutlet: UIView!
     @IBOutlet weak var sideMenuViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sideMenu: UIView!
     
     //MARK: View
     override func viewDidLoad() {
         msgTextField.delegate = self
         super.viewDidLoad()
-        setupKeyboardObservers()
         print("WE ARE IN THE ALL CHAT CONTROLLER")
         chatCollectionView?.register(AllChatMessageCell.self, forCellWithReuseIdentifier: "allChatCell")
         inputContainerViewBottomAnchor = self.inputContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
         inputContainerViewBottomAnchor?.isActive = true
+        sideMenu.layer.cornerRadius = 20
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,6 +65,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             observeMessages()
             self.flag = false
         }
+        setupKeyboardObservers()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -72,25 +74,29 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     //MARK: Helper
     func observeMessages(){
-        let ref = FIRDatabase.database().reference().child(self.cityChat!)
-        ref.observe(.childAdded, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                let message = Message()
-                message.setValuesForKeys(dictionary)
-                if let integer = Int((message.timestamp)!) {
-                    let timeInterval = NSNumber(value: integer)
-                    let seconds = timeInterval.doubleValue
-                    let timeStampDate = NSDate(timeIntervalSince1970: seconds)
-                    if self.loginTime < timeStampDate as Date {
-                         self.messages.append(message)
+        if let city = self.cityChat{
+            let ref = FIRDatabase.database().reference().child(city)
+            ref.observe(.childAdded, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Message()
+                    message.setValuesForKeys(dictionary)
+                    if let integer = Int((message.timestamp)!) {
+                        let timeInterval = NSNumber(value: integer)
+                        let seconds = timeInterval.doubleValue
+                        let timeStampDate = NSDate(timeIntervalSince1970: seconds)
+                        if self.loginTime < timeStampDate as Date {
+                            self.messages.append(message)
+                        }
                     }
+                    self.messages.sort(by: { (message1, message2) -> Bool in
+                        return Int(message1.timestamp!)! < Int(message2.timestamp!)!
+                    })
+                    self.chatCollectionView.reloadData()
                 }
-                self.messages.sort(by: { (message1, message2) -> Bool in
-                    return Int(message1.timestamp!)! < Int(message2.timestamp!)!
-                })
-                self.chatCollectionView.reloadData()
-            }
-        },  withCancel: nil)
+            },  withCancel: nil)
+        } else{
+            return
+        }
     }
     
     
@@ -116,44 +122,52 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     //MARK: Actions
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        handleLogoutAndSegue(completion: {
-
-            self.performSegue(withIdentifier: "unwindToMain", sender: self)
+        self.handleLogoutAndSegue(completion: {
+            self.performSegue(withIdentifier: "logoutUserSegue", sender: self)
         })
     }
     
+    @IBAction func profileButtonPressed(_ sender: UIButton) {
+        let profileViewController = UserProfileViewController()
+        profileViewController.transitioningDelegate = viewTransitionDelegate
+        profileViewController.modalPresentationStyle = .custom
+        present(profileViewController, animated: true, completion: nil)
+    }
     
     func handleLogoutAndSegue(completion: @escaping () -> ()){
-        guard let current = FIRAuth.auth()?.currentUser?.uid else{
+        if let current = FIRAuth.auth()?.currentUser?.uid {
+            let ref = FIRDatabase.database().reference()
+            ref.child("users").child(current).updateChildValues(["loggedOn": "false"])
+            do{
+                try FIRAuth.auth()?.signOut()
+            } catch {
+                let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
             completion()
-            return
         }
-        let ref = FIRDatabase.database().reference()
-        ref.child("users").child(current).updateChildValues(["loggedOn": "false"])
-        do{
-            try FIRAuth.auth()?.signOut()
-            print(FIRAuth.auth()?.currentUser?.uid)
-        } catch {
-            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        completion()
+        return
     }
 
     @IBAction func sendButtonPressed(_ sender: UIButton) {
-        let ref = FIRDatabase.database().reference().child(cityChat!)
-        let childRef = ref.childByAutoId()
-        let sender = FIRAuth.auth()!.currentUser!.uid
-        let timestamp = String(Int(NSDate().timeIntervalSince1970))
-        guard let username = self.user?.username else{
-            return
-        }
-        let values = ["text": msgTextField.text!, "sender": sender, "timestamp": timestamp, "username": username] as [String : Any]
-        childRef.updateChildValues(values)
-        if messages.count > 0{
-            let indexPath = IndexPath(row: messages.count - 1, section: 0)
-            chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        if self.msgTextField.text != "" {
+            let ref = FIRDatabase.database().reference().child(cityChat!)
+            let childRef = ref.childByAutoId()
+            guard let sender = FIRAuth.auth()?.currentUser?.uid else{
+                return
+            }
+            let timestamp = String(Int(NSDate().timeIntervalSince1970))
+            guard let username = self.user?.username else{
+                return
+            }
+            let values = ["text": msgTextField.text!, "sender": sender, "timestamp": timestamp, "username": username] as [String : Any]
+            childRef.updateChildValues(values)
+            if messages.count > 0{
+                let indexPath = IndexPath(row: messages.count - 1, section: 0)
+                chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            }
+            self.msgTextField.text = nil
         }
     }
     
@@ -183,13 +197,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         }
     }
     
-    
-   
-    
-    
-    
-    
-    
+
     //MARK: CollectionView
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -213,21 +221,21 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             let date = dateFormatter.string(from: timeStampDate as Date)
             if sender == self.user?.id {
                 cell.detailTextLabel.text = date
-                cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+                cell.bubbleView.backgroundColor = UIColor.init(red: 144/255, green: 238/255, blue: 144/255, alpha: 1.0)
                 cell.textView.textColor = UIColor.white
                 cell.detailTextLabel.textColor = UIColor.white
                 cell.bubbleViewRightAnchor?.isActive = true
                 cell.bubbleViewLeftAnchor?.isActive = false
-                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 42
+                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!, date: cell.detailTextLabel.text!).width + 16
                 
             } else{
                 cell.detailTextLabel.text = message.username! + " - " + date
-                cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+                cell.bubbleView.backgroundColor = UIColor.init(red: 144/255, green: 238/255, blue: 144/255, alpha: 0.3)
                 cell.textView.textColor = UIColor.black
                 cell.detailTextLabel.textColor = UIColor.black
                 cell.bubbleViewRightAnchor?.isActive = false
                 cell.bubbleViewLeftAnchor?.isActive = true
-                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!).width + 80
+                cell.bubbleWidthAnchor?.constant = self.estimateFrameForText(text: message.text!, date: cell.detailTextLabel.text!).width + 16
             }
         }
         
@@ -235,10 +243,11 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         return cell
     }
     
-    private func estimateFrameForText(text: String) -> CGRect{
+    private func estimateFrameForText(text: String, date: String) -> CGRect{
+        let boxWidth = text.characters.count > date.characters.count ? text : date
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+        return NSString(string: boxWidth).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
         
     }
     
@@ -258,7 +267,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     func handleKeyboardDidShow(){
         if messages.count > 0{
             let indexPath = IndexPath(row: messages.count - 1, section: 0)
-            chatCollectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            chatCollectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
         }
     }
     
@@ -266,7 +275,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         inputContainerViewBottomAnchor?.constant = -keyboardFrame!.height
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: keyboardDuration!, animations: {
             self.handleKeyboardDidShow()
             self.view.layoutIfNeeded()
         })
@@ -275,7 +284,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     func handleKeyboardWillHide(notification: NSNotification){
         inputContainerViewBottomAnchor?.constant = -60
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: keyboardDuration!, animations: {
             self.handleKeyboardDidShow()
             self.view.layoutIfNeeded()
         })
