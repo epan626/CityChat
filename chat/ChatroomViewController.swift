@@ -152,7 +152,10 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
 
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         if self.msgTextField.text != "" {
-            let ref = FIRDatabase.database().reference().child(cityChat!)
+            guard let cityChatroom = self.cityChat as String? else{
+                return
+            }
+            let ref = FIRDatabase.database().reference().child(cityChatroom)
             let childRef = ref.childByAutoId()
             guard let sender = FIRAuth.auth()?.currentUser?.uid else{
                 return
