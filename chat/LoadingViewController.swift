@@ -45,13 +45,13 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             self.progressView.setProgress(0.0, animated: true)
         })
 //        logout
-                do{
-                    try FIRAuth.auth()?.signOut()
-                } catch {
-                    let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                }
+//                do{
+//                    try FIRAuth.auth()?.signOut()
+//                } catch {
+//                    let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+//                    alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+//                    self.present(alert, animated: true, completion: nil)
+//                }
 
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -118,8 +118,6 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 guard let dictionary = snapshot.value as? [String: AnyObject] else{
                     return
                 }
-                
-                
                 self.performSegue(withIdentifier: "cityChatSegue", sender: snapshot)
             }, withCancel: nil)
             
