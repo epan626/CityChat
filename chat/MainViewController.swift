@@ -32,7 +32,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         nameOutlet.delegate = self
         emailOutlet.delegate = self
         passwordOutlet.delegate = self
-        self.view.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         super.viewDidLoad()
     }
 
@@ -56,7 +55,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     let ref = FIRDatabase.database().reference()
                     let current = FIRAuth.auth()!.currentUser!.uid
-                    FIRDatabase.database().reference().child("users").child(current).observe(.value, with: { (snapshot) in
+                    FIRDatabase.database().reference().child("users").child(current).observeSingleEvent(of: .value, with: { (snapshot) in
                         guard let loggedInUserInfo = snapshot.value as? [String: AnyObject] else{
                             return
                         }
@@ -176,10 +175,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
-    
-    //MARK: Unwind Segue
-
-    @IBAction func unwindToMain(segue: UIStoryboardSegue){}
     
     //MARK: Dismiss
     func dismissKeyboard(){

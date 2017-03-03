@@ -44,14 +44,14 @@ class LoadingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         UIView.animate(withDuration: 3.0, animations: { () -> Void in
             self.progressView.setProgress(0.0, animated: true)
         })
-        //logout
-        //        do{
-        //            try FIRAuth.auth()?.signOut()
-        //        } catch {
-        //            let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
-        //            alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
-        //            self.present(alert, animated: true, completion: nil)
-        //        }
+//        logout
+                do{
+                    try FIRAuth.auth()?.signOut()
+                } catch {
+                    let alert = UIAlertController(title: "Invalid", message: "There was an issue logging out. Please try again.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Try again.", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
 
     }
     override func viewDidAppear(_ animated: Bool) {
