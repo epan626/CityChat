@@ -29,9 +29,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         emailOutlet.isSecureTextEntry = true
         passwordOutlet.isHidden = true
         passwordOutlet.isEnabled = false
-        nameOutlet.delegate = self
-        emailOutlet.delegate = self
-        passwordOutlet.delegate = self
+        nameOutlet?.delegate = self
+        emailOutlet?.delegate = self
+        passwordOutlet?.delegate = self
         super.viewDidLoad()
     }
 
@@ -181,15 +181,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Dismiss
     func dismissKeyboard(){
-        nameOutlet.resignFirstResponder()
-        emailOutlet.resignFirstResponder()
-        passwordOutlet.resignFirstResponder()
+        self.view.endEditing(true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        nameOutlet.resignFirstResponder()
-        emailOutlet.resignFirstResponder()
-        passwordOutlet.resignFirstResponder()
+        textField.resignFirstResponder()
         return true
     }
    

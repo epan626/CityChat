@@ -128,10 +128,9 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     }
     
     @IBAction func profileButtonPressed(_ sender: UIButton) {
-        let profileViewController = UserProfileViewController()
-        profileViewController.transitioningDelegate = viewTransitionDelegate
-        profileViewController.modalPresentationStyle = .custom
-        present(profileViewController, animated: true, completion: nil)
+        let profileViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! UserProfileViewController
+        let navViewController = UINavigationController(rootViewController: profileViewController)
+        present(navViewController, animated: true, completion: nil)
     }
     
     func handleLogoutAndSegue(completion: @escaping () -> ()){

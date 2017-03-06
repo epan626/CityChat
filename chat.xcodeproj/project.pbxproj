@@ -151,25 +151,12 @@
 			isa = PBXGroup;
 			children = (
 				0768BCF21E6483C500356E34 /* AppDelegate.swift */,
-				0768BCF41E6483C500356E34 /* MainViewController.swift */,
-				0725843A1E666287003D2B25 /* chatCell.swift */,
+				8560DC8F1E69FEB100F7CAC4 /* Models */,
+				8560DC901E69FEC000F7CAC4 /* Views */,
+				8560DC8D1E69FE5300F7CAC4 /* Controllers */,
+				8560DC8E1E69FE9F00F7CAC4 /* Animations */,
 				0768BCF61E6483C500356E34 /* Main.storyboard */,
-				8539B9411E64E193001D852D /* DirectMessageViewController.swift */,
-				85EC8AF41E68F30400DE292D /* UserProfileViewController.swift */,
-				854EE9C81E67C522007045C3 /* ChatMessageCell.swift */,
-				85235AB81E68970700C51D69 /* AllChatMessageCell.swift */,
-				8539B93F1E64E030001D852D /* UserListViewController.swift */,
-				07FF608F1E68DAFB007E9318 /* offlineUserCell.swift */,
-				8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */,
-				07EA15EA1E67804900E78F20 /* userCell.swift */,
-				072584381E665E70003D2B25 /* Message.swift */,
 				0768BCFC1E6483C500356E34 /* Assets.xcassets */,
-				074093351E64FF12009408A7 /* LoadingViewController.swift */,
-				85EC8AEC1E68DE8700DE292D /* TransitionDelegate.swift */,
-				85EC8AEE1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift */,
-				85EC8AF01E68DEF100DE292D /* TransitionPresentationAnimator.swift */,
-				85EC8AF21E68DF1600DE292D /* TransitionDismissalAnimator.swift */,
-				072584361E6655DC003D2B25 /* User.swift */,
 				0768BCFE1E6483C500356E34 /* LaunchScreen.storyboard */,
 				0768BD011E6483C500356E34 /* Info.plist */,
 				0768BD231E64C76D00356E34 /* GoogleService-Info.plist */,
@@ -204,6 +191,51 @@
 				26A5BCBD44DD8B9EFE5F544C /* Pods_chatUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8560DC8D1E69FE5300F7CAC4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0768BCF41E6483C500356E34 /* MainViewController.swift */,
+				8539B93F1E64E030001D852D /* UserListViewController.swift */,
+				8539B9411E64E193001D852D /* DirectMessageViewController.swift */,
+				85EC8AF41E68F30400DE292D /* UserProfileViewController.swift */,
+				8539B93D1E64D5DF001D852D /* ChatroomViewController.swift */,
+				074093351E64FF12009408A7 /* LoadingViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		8560DC8E1E69FE9F00F7CAC4 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				85EC8AEC1E68DE8700DE292D /* TransitionDelegate.swift */,
+				85EC8AEE1E68DEC300DE292D /* CircleDisplayTransitionAnimator.swift */,
+				85EC8AF01E68DEF100DE292D /* TransitionPresentationAnimator.swift */,
+				85EC8AF21E68DF1600DE292D /* TransitionDismissalAnimator.swift */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
+		8560DC8F1E69FEB100F7CAC4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				072584381E665E70003D2B25 /* Message.swift */,
+				072584361E6655DC003D2B25 /* User.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		8560DC901E69FEC000F7CAC4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0725843A1E666287003D2B25 /* chatCell.swift */,
+				854EE9C81E67C522007045C3 /* ChatMessageCell.swift */,
+				85235AB81E68970700C51D69 /* AllChatMessageCell.swift */,
+				07FF608F1E68DAFB007E9318 /* offlineUserCell.swift */,
+				07EA15EA1E67804900E78F20 /* userCell.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		9B0B9EA705AE88A3DB921E16 /* Pods */ = {
@@ -296,7 +328,7 @@
 				TargetAttributes = {
 					0768BCEE1E6483C500356E34 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = CC4A7GJE49;
+						DevelopmentTeam = 225XNVWBRP;
 						ProvisioningStyle = Automatic;
 					};
 					0768BD051E6483C500356E34 = {
@@ -674,11 +706,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = CC4A7GJE49;
+				DEVELOPMENT_TEAM = 225XNVWBRP;
 				INFOPLIST_FILE = chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = eric.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = charlie.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -690,11 +722,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = CC4A7GJE49;
+				DEVELOPMENT_TEAM = 225XNVWBRP;
 				INFOPLIST_FILE = chat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = eric.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = charlie.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
