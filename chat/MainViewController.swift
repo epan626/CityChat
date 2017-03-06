@@ -117,8 +117,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
                         guard let dictionary = snapshot.value as? [String: AnyObject] else{
                             return
                         }
-                        
-                        print(dictionary)
                         let user = User()
                         user.setValuesForKeys(dictionary)
                         self.user.append(user)

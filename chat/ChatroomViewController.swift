@@ -66,6 +66,19 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
             self.flag = false
         }
         setupKeyboardObservers()
+        fetchCurrentUser()
+    }
+    
+    private func fetchCurrentUser(){
+        if let currenUserId = FIRAuth.auth()?.currentUser?.uid{
+            FIRDatabase.database().reference().child("users").child(currenUserId).observe(.value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject]{
+                    let user = User()
+                    user.setValuesForKeys(dictionary)
+                    self.user = user                    
+                }
+            }, withCancel: nil)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -129,6 +142,7 @@ class allChatController: UIViewController, UITextFieldDelegate, UICollectionView
     
     @IBAction func profileButtonPressed(_ sender: UIButton) {
         let profileViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! UserProfileViewController
+        profileViewController.user = self.user
         let navViewController = UINavigationController(rootViewController: profileViewController)
         present(navViewController, animated: true, completion: nil)
     }
